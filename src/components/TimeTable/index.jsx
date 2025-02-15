@@ -4,6 +4,7 @@ import { SiSession } from "react-icons/si";
 import { GrHelpBook } from "react-icons/gr";
 import { FaPersonChalkboard } from "react-icons/fa6";
 import { SiGoogleclassroom } from "react-icons/si";
+
 import { LuGraduationCap } from "react-icons/lu";
 import { SlCalender } from "react-icons/sl";
 import { AiOutlineBorderInner } from "react-icons/ai";
@@ -37,6 +38,7 @@ const TimeTable = () => {
           Lecturers
         </Link>
         {/* Room and Lab Section */}
+
         <div className="relative">
           <button
             className="items-center text-[16px] gap-2 cursor-pointer hover:text-blue-700"
@@ -64,6 +66,7 @@ const TimeTable = () => {
             </div>
           )}
         </div>
+
         {/* Semester section */}
         <div className="relative ">
           <button
