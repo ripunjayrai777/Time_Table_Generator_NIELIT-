@@ -1,7 +1,7 @@
 import React from "react";
 
 const SubjectSemester = () => {
-  return <div>Add Subject To Semester</div>;
+  return <div>Add Subject To Semester in process</div>;
 };
 
 export default SubjectSemester;
