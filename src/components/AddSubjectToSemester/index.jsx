@@ -1,19 +1,18 @@
-//SemesterSubject.jsx
+//Subject to Semesters...
 import React, { useEffect, useState } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { store } from "../../redux/store";
 import { fetchSubjects } from "../../redux/subjectsSlice";
-import { FaSave, FaEraser } from "react-icons/fa";
+import { FaSave, FaEraser, FaTrash } from "react-icons/fa";
 
 const SemesterSubjects = () => {
   const dispatch = useDispatch();
   const { subjects, status } = useSelector((state) => state.subjects);
-
   const [subjectTitle, setSubjectTitle] = useState("");
   const [semester, setSemester] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
-  const [savedData, setSavedData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [savedData, setSavedData] = useState([]);
 
   useEffect(() => {
     dispatch(fetchSubjects());
@@ -24,8 +23,12 @@ const SemesterSubjects = () => {
       alert("Please fill all fields");
       return;
     }
-
-    const newEntry = { subjectTitle, semester, selectedSubject };
+    const newEntry = {
+      subjectTitle,
+      semester,
+      selectedSubject,
+      status: "Active",
+    };
     setSavedData([...savedData, newEntry]);
     setSubjectTitle("");
     setSemester("");
@@ -33,8 +36,22 @@ const SemesterSubjects = () => {
     alert("Saved Successfully!");
   };
 
-  const filteredSubjects = subjects.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const handleRemove = (index) => {
+    const updatedData = savedData.filter((_, i) => i !== index);
+    setSavedData(updatedData);
+  };
+
+  const handleStatusChange = (index) => {
+    const updatedData = savedData.map((item, i) =>
+      i === index
+        ? { ...item, status: item.status === "Active" ? "Inactive" : "Active" }
+        : item
+    );
+    setSavedData(updatedData);
+  };
+
+  const filteredSavedData = savedData.filter((item) =>
+    item.subjectTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -44,6 +61,13 @@ const SemesterSubjects = () => {
           <h2 className="text-2xl text-black font-semibold mb-4">
             Semester Subject Registration
           </h2>
+          <input
+            type="text"
+            placeholder="Search Saved Subject"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full p-2 border rounded-md mb-4 text-black"
+          />
           <input
             type="text"
             placeholder="Subject Title"
@@ -104,57 +128,43 @@ const SemesterSubjects = () => {
                 <th className="border p-2">Subject Title</th>
                 <th className="border p-2">Semester</th>
                 <th className="border p-2">Selected Subject</th>
+                <th className="border p-2">Status</th>
+                <th className="border p-2">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {savedData.length === 0 ? (
+              {filteredSavedData.length === 0 ? (
                 <tr>
-                  <td colSpan="3" className="text-center p-4">
+                  <td colSpan="5" className="text-center p-4">
                     No data saved yet.
                   </td>
                 </tr>
               ) : (
-                savedData.map((item, index) => (
+                filteredSavedData.map((item, index) => (
                   <tr key={index} className="text-center">
                     <td className="border p-2">{item.subjectTitle}</td>
                     <td className="border p-2">{item.semester}</td>
                     <td className="border p-2">{item.selectedSubject}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-          <h2 className="text-2xl font-semibold text-green-600 mb-4">
-            All Subjects
-          </h2>
-          <input
-            type="text"
-            placeholder="Search Subject"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 border rounded-md mb-4 text-black"
-          />
-          <table className="w-full border-collapse border border-gray-400">
-            <thead>
-              <tr className="bg-blue-100 text-gray-600">
-                <th className="border p-2">Program</th>
-                <th className="border p-2">Semester</th>
-                <th className="border p-2">Subject</th>
-              </tr>
-            </thead>
-            <tbody>
-              {status === "loading" ? (
-                <tr>
-                  <td colSpan="3" className="text-center p-4">
-                    Loading...
-                  </td>
-                </tr>
-              ) : (
-                filteredSubjects.map((item, index) => (
-                  <tr key={index} className="text-center">
-                    <td className="border p-2">{item.program}</td>
-                    <td className="border p-2">{item.semester}</td>
-                    <td className="border p-2">{item.name}</td>
+                    <td className="border p-2">
+                      <button
+                        onClick={() => handleStatusChange(index)}
+                        className={`px-4 py-1 rounded-md text-white ${
+                          item.status === "Active"
+                            ? "bg-green-500"
+                            : "bg-red-500"
+                        }`}
+                      >
+                        {item.status}
+                      </button>
+                    </td>
+                    <td className="border p-2">
+                      <button
+                        onClick={() => handleRemove(index)}
+                        className="bg-red-600 text-white px-3 py-1 rounded-md flex items-center gap-2 hover:bg-red-800"
+                      >
+                        <FaTrash /> Remove
+                      </button>
+                    </td>
                   </tr>
                 ))
               )}
