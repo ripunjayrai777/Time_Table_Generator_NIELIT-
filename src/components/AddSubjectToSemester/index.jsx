@@ -1,4 +1,5 @@
-//Subject to Semesters...
+// //Subject to Semesters...
+
 import React, { useEffect, useState } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { store } from "../../redux/store";
@@ -63,13 +64,6 @@ const SemesterSubjects = () => {
           </h2>
           <input
             type="text"
-            placeholder="Search Saved Subject"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 border rounded-md mb-4 text-black"
-          />
-          <input
-            type="text"
             placeholder="Subject Title"
             value={subjectTitle}
             onChange={(e) => setSubjectTitle(e.target.value)}
@@ -122,6 +116,13 @@ const SemesterSubjects = () => {
           <h2 className="text-2xl font-semibold text-green-600 mb-4">
             Saved Subjects
           </h2>
+          <input
+            type="text"
+            placeholder="Search Saved Subject"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full p-2 border rounded-md mb-4 text-black"
+          />
           <table className="w-full border-collapse border border-gray-400 mb-6">
             <thead>
               <tr className="bg-gray-200 text-gray-600">
