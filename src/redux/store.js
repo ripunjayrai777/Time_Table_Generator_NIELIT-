@@ -7,3 +7,4 @@ export const store = configureStore({
     subjects: subjectsReducer,
   },
 });
+export default store;
