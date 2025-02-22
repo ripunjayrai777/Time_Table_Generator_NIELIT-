@@ -56,7 +56,7 @@ export default function DaysManager() {
         </label>
         <div className="flex gap-4">
           <button
-            className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+            className="bg-[#1976d2] text-white py-2 px-4 rounded-lg hover:bg-white hover:text-[#1976d2]"
             onClick={() => {
               setDayName("");
               setDayStatus(false);
@@ -106,7 +106,7 @@ export default function DaysManager() {
                   </td>
                   <td className="p-3">
                     <button
-                      className="bg-red-600 text-white py-1 px-3 rounded-lg hover:bg-red-600"
+                      className="bg-red-600 text-white py-1 px-3 rounded-lg hover:bg-red-800"
                       onClick={() => handleRemove(day.id)}
                     >
                       Remove
