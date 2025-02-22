@@ -17,7 +17,7 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer className="bg-blue-800 text-white py-10">
+    <footer className="bg-[#1976d2] text-white py-10">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-5 gap-8 text-left">
         {/* Explore NIELIT */}
         <div>

@@ -23,19 +23,19 @@ const TimeTable = () => {
   return (
     <>
       <div className="nav2 flex items-center justify-between gap-5 p-2 m-2 ml-7 mr-7">
-        <Link to="/program" className="hover:text-blue-700">
+        <Link to="/program" className="hover:text-[#1976d2]">
           <IoBookOutline className="text-[40px] flex items-center justify-between " />
           Program
         </Link>
-        <Link to="/session" className="hover:text-blue-700">
+        <Link to="/session" className="hover:text-[#1976d2]">
           <SiSession className="text-[40px] flex items-center justify-between" />
           Session
         </Link>
-        <Link to="/subjects" className="hover:text-blue-700">
+        <Link to="/subjects" className="hover:text-[#1976d2]">
           <GrHelpBook className="text-[40px] flex items-center justify-between" />
           Subjects
         </Link>
-        <Link to="/lecturers" className="hover:text-blue-700">
+        <Link to="/lecturers" className="hover:text-[#1976d2]">
           <FaPersonChalkboard className="text-[40px] flex items-center justify-between" />
           Lecturers
         </Link>
@@ -43,7 +43,7 @@ const TimeTable = () => {
 
         <div className="relative">
           <button
-            className="items-center text-[16px] gap-2 cursor-pointer hover:text-blue-700"
+            className="items-center text-[16px] gap-2 cursor-pointer hover:text-[#1976d2]"
             onClick={() => setdropdownOpenRL(!dropdownOpenRL)}
           >
             <SiGoogleclassroom className="text-[40px] flex items-center justify-between" />{" "}
@@ -72,7 +72,7 @@ const TimeTable = () => {
         {/* Semester section */}
         <div className="relative ">
           <button
-            className="items-center text-[16px] gap-2 cursor-pointer hover:text-blue-700"
+            className="items-center text-[16px] gap-2 cursor-pointer hover:text-[#1976d2]"
             onClick={() => setdropdownOpen(!dropdownOpen)}
           >
             <LuGraduationCap className="text-[40px] flex items-center justify-between" />{" "}
@@ -119,7 +119,7 @@ const TimeTable = () => {
         </Link> */}
         <div className="relative">
           <button
-            className="items-center text-[16px] gap-2 cursor-pointer hover:text-blue-700"
+            className="items-center text-[16px] gap-2 cursor-pointer hover:text-[#1976d2]"
             onClick={() => setdropdownOpenD(!dropdownOpenD)}
           >
             <SlCalender className="text-[40px] flex items-center justify-between" />{" "}
@@ -145,11 +145,11 @@ const TimeTable = () => {
           )}
         </div>
         {/* Generate Table Section */}
-        <Link to="/generate-table" className="hover:text-blue-700">
+        <Link to="/generate-table" className="hover:text-[#1976d2]">
           <AiOutlineBorderInner className="text-[40px] flex items-center justify-between " />
           Generate Table
         </Link>
-        <Link to="/print" className="hover:text-blue-700">
+        <Link to="/print" className="hover:text-[#1976d2]">
           <IoPrintOutline className="text-[40px] flex items-center justify-between" />
           Print
         </Link>

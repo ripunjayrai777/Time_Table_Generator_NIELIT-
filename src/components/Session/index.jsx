@@ -101,7 +101,7 @@ function Session() {
           <div className="flex justify-between gap-2">
             <button
               onClick={handleSave}
-              className="flex items-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-md"
+              className="flex items-center px-5 py-2.5 bg-[#1976d2] hover:bg-white text-white hover:text-[#1976d2] rounded-lg shadow-md transition-all"
             >
               <FaSave className="mr-2" />
               Save

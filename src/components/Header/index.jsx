@@ -34,11 +34,11 @@ function Header() {
 
         <div className="flex items-center">
           <div className="mr-5">
-            <a href="#" className="text-blue-600 hover:underline">
+            <a href="#" className="text-[#1976d2] hover:underline">
               Screen Reader Access
             </a>
             <span className="mx-1 text-gray-600">|</span>
-            <a href="#" className="text-blue-600 hover:underline">
+            <a href="#" className="text-[#1976d2] hover:underline">
               Skip to main content
             </a>
           </div>
@@ -71,9 +71,9 @@ function Header() {
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="p-2 w-48 border rounded-l-md focus:ring-2 focus:ring-indigo-400"
+              className="p-2 w-48 border rounded-l-md focus:ring-2 focus:ring-[#1976d2]"
             />
-            <button className="p-2 bg-indigo-600 text-white rounded-r-md hover:bg-indigo-700">
+            <button className="p-2 bg-[#1976d2] text-white rounded-r-md hover:bg-white hover:text-[#1976d2]">
               <FaSearch />
             </button>
           </div>
@@ -86,7 +86,7 @@ function Header() {
         <div className="flex items-center">
           <img src="Logo.png" alt="Logo" className="mr-4 w-24 h-14" />
           <div className="header-title">
-            <h1 className="text-lg text-blue-700 font-semibold">
+            <h1 className="text-lg text-[#1976d2] font-semibold">
               राष्ट्रीय इलेक्ट्रॉनिकी एवं सूचना प्रौद्योगिकी संस्थान
             </h1>
             <h2 className="text-sm text-gray-600">
@@ -103,7 +103,7 @@ function Header() {
             className="mr-4 w-12 h-16"
           />
           <div className="ministry-title">
-            <h3 className="text-blue-700 font-medium">
+            <h3 className="text-[#1976d2] font-medium">
               Ministry of Electronics & Information Technology
             </h3>
             <h4 className="text-sm text-gray-600">Government of India</h4>
