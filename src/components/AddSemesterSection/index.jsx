@@ -74,9 +74,9 @@ const SemesterSections = () => {
   }, [dispatch]);
 
   return (
-    <div className="p-6 bg-green-600 h-screen text-white flex gap-4">
-      <div className="bg-green-700 p-4 rounded-lg w-1/3">
-        <h2 className="text-lg font-bold mb-4">
+    <div className="p-10 bg-gradient-to-r from-blue-50 to-indigo-50 h-screen  flex gap-6">
+      <div className="bg-blue-100 p-4 rounded-lg w-1/3">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-700">
           Semester Section Registration
         </h2>
         <label className="block mb-2">Section Title</label>
@@ -141,8 +141,8 @@ const SemesterSections = () => {
         </div>
       </div>
 
-      <div className="bg-green-700 p-4 rounded-lg w-2/3">
-        <h2 className="text-lg font-bold mb-4">Search</h2>
+      <div className="bg-white p-4 rounded-lg w-2/3">
+        <h2 className="text-2xl font-semibold mb-4 text-green-600">Search</h2>
         <input
           type="text"
           placeholder="Search by Section or Semester"
