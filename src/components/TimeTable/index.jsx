@@ -13,9 +13,11 @@ import { Link } from "react-router-dom";
 
 const TimeTable = () => {
   const [dropdownOpenRL, setdropdownOpenRL] = useState(false);
+  const [dropdownOpenD, setdropdownOpenD] = useState(false);
   const [dropdownOpen, setdropdownOpen] = useState(false);
 
   const handleDropdownCloseRL = () => setdropdownOpenRL(false);
+  const handleDropdownCloseD = () => setdropdownOpenD(false);
   const handleDropdownClose = () => setdropdownOpen(false);
 
   return (
@@ -111,10 +113,38 @@ const TimeTable = () => {
           )}
         </div>
         {/* Day Section */}
-        <Link to="/days" className="hover:text-blue-700">
+        {/* <Link to="/days" className="hover:text-blue-700">
           <SlCalender className="text-[40px] flex items-center justify-between" />
           Days
-        </Link>
+        </Link> */}
+        <div className="relative">
+          <button
+            className="items-center text-[16px] gap-2 cursor-pointer hover:text-blue-700"
+            onClick={() => setdropdownOpenD(!dropdownOpenD)}
+          >
+            <SlCalender className="text-[40px] flex items-center justify-between" />{" "}
+            Days
+          </button>
+          {dropdownOpenD && (
+            <div className="absolute bg-white shadow-md rounded-md mt-2 w-40">
+              <Link
+                to="/days/selection"
+                className="block px-4 py-2 hover:bg-gray-100 text-[14px]"
+                onClick={handleDropdownCloseD}
+              >
+                Days Selection
+              </Link>
+              <Link
+                to="/days/slot"
+                className="block px-4 py-2 hover:bg-gray-100 text-[14px]"
+                onClick={handleDropdownCloseD}
+              >
+                Day & Time Slot
+              </Link>
+            </div>
+          )}
+        </div>
+        {/* Generate Table Section */}
         <Link to="/generate-table" className="hover:text-blue-700">
           <AiOutlineBorderInner className="text-[40px] flex items-center justify-between " />
           Generate Table

@@ -16,6 +16,7 @@ import SubjectSemester from "./components/AddSubjectToSemester";
 import SemesterProgram from "./components/AssignSemesterToProgram";
 import NewSemester from "./components/NewSemester";
 import Days from "./components/Days";
+import DayTimeSlot from "./components/DayTimeSlot";
 import TimeTable from "./components/TimeTable";
 import Print from "./components/Print";
 
@@ -56,7 +57,8 @@ function App() {
             path="/semesters/assign-semester-to-program"
             element={<SemesterProgram />}
           />
-          <Route path="/days" element={<Days />} />
+          <Route path="/days/selection" element={<Days />} />
+          <Route path="/days/slot" element={<DayTimeSlot />} />
           <Route path="/generate-table" element={<GenerateTable />} />
           <Route path="/print" element={<Print />} />
           <Route path="/time-table" element={<TimeTable />} />
