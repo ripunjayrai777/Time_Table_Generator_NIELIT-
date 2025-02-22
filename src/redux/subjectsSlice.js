@@ -80,13 +80,30 @@ export const addSection = createAsyncThunk(
   }
 );
 
+export const fetchSemesters = createAsyncThunk(
+  "subjects/fetchSemesters",
+  async () => {
+    return [
+      "2017-2021 BS-CS 7th Semester",
+      "2020-2024 BS-CS 1st Semester",
+      "2018-2022 BS-IT 5th Semester",
+    ];
+  }
+);
 // Slice
 const subjectsSlice = createSlice({
   name: "subjects",
-  initialState: { subjects: [], sections: [], status: "idle", error: null },
+  initialState: {
+    subjects: [],
+    sections: [],
+    semester: [],
+    status: "idle",
+    error: null,
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
+      //  Handle  fetching
       .addCase(fetchSubjects.pending, (state) => {
         state.status = "loading";
       })
@@ -102,6 +119,9 @@ const subjectsSlice = createSlice({
       })
       .addCase(addSection.fulfilled, (state, action) => {
         state.sections.push(action.payload);
+      })
+      .addCase(fetchSemesters.fulfilled, (state, action) => {
+        state.semesters = action.payload;
       });
   },
 });

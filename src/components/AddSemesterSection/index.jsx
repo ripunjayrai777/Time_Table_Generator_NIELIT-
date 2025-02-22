@@ -1,184 +1,196 @@
-import React, { useEffect, useState } from "react";
-import { fetchSections, addSection } from "../../redux/subjectsSlice";
-import { useSelector, useDispatch, Provider } from "react-redux";
-import {
-  Card,
-  CardContent,
-  Button,
-  TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Typography,
-  Box,
-} from "@mui/material";
+// using redux
+
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector, Provider } from "react-redux";
+import { fetchSemesters } from "../../redux/subjectsSlice";
 import store from "../../redux/store";
 
 const SemesterSections = () => {
   const dispatch = useDispatch();
-  const sectionsFromStore = useSelector((state) => state.sections?.data) || [];
-
-  const [sections, setSections] = useState([]);
   const [sectionTitle, setSectionTitle] = useState("");
-  const [selectedSemester, setSelectedSemester] = useState("");
+  const semesters = useSelector((state) => state.subjects?.semesters || []); // Access semesters from Redux state
+  const [semester, setSemester] = useState("2017-2021 BS-CS 7th Semester");
   const [capacity, setCapacity] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [sections, setSections] = useState([
+    {
+      title: "Section A",
+      semester: "2020-2024 BS-CS 1st Semester",
+      capacity: 30,
+      status: true,
+    },
+    {
+      title: "Section B",
+      semester: "2020-2024 BS-CS 1st Semester",
+      capacity: 25,
+      status: true,
+    },
+    {
+      title: "Section A",
+      semester: "2018-2022 BS-IT 5th Semester",
+      capacity: 20,
+      status: false,
+    },
+    {
+      title: "Section B",
+      semester: "2018-2022 BS-IT 5th Semester",
+      capacity: 35,
+      status: false,
+    },
+  ]);
 
-  useEffect(() => {
-    dispatch(fetchSections());
-  }, [dispatch]);
+  const handleSave = () => {
+    const newSection = {
+      title: sectionTitle,
+      semester,
+      capacity: parseInt(capacity, 10) || 0,
+      status: true,
+    };
+    setSections([...sections, newSection]);
+    setSectionTitle("");
+    setCapacity("");
+  };
 
-  useEffect(() => {
-    setSections(sectionsFromStore);
-  }, [sectionsFromStore]);
+  const handleRemove = (index) => {
+    setSections(sections.filter((_, i) => i !== index));
+  };
 
-  const handleSubmit = () => {
-    if (sectionTitle && selectedSemester && capacity) {
-      const newSection = {
-        sectionTitle,
-        semester: selectedSemester,
-        capacity,
-      };
-
-      dispatch(addSection(newSection));
-
-      // Update the local state immediately
-      setSections((prevSections) => [...prevSections, newSection]);
-
-      // Clear the input fields
-      setSectionTitle("");
-      setSelectedSemester("");
-      setCapacity("");
-    }
+  const handleStatusChange = (index) => {
+    setSections(
+      sections.map((sec, i) =>
+        i === index ? { ...sec, status: !sec.status } : sec
+      )
+    );
   };
 
   const filteredSections = sections.filter(
-    (section) =>
-      section.sectionTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      section.semester.toLowerCase().includes(searchTerm.toLowerCase())
+    (sec) =>
+      sec.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      sec.semester.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  return (
-    <Box className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-      {/* Left Section: Form */}
-      <Card elevation={3} sx={{ backgroundColor: "#f5f5f5", padding: 3 }}>
-        <CardContent>
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
-            Semester Section Registration
-          </Typography>
-          <TextField
-            fullWidth
-            label="Section Title"
-            variant="outlined"
-            value={sectionTitle}
-            onChange={(e) => setSectionTitle(e.target.value)}
-            margin="normal"
-          />
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Select Semester</InputLabel>
-            <Select
-              value={selectedSemester}
-              onChange={(e) => setSelectedSemester(e.target.value)}
-            >
-              <MenuItem value="">Select Semester</MenuItem>
-              <MenuItem value="2017-2021 BS-CS 7th Semester">
-                2017-2021 BS-CS 7th Semester
-              </MenuItem>
-              <MenuItem value="2020-2024 BS-CS 1st Semester">
-                2020-2024 BS-CS 1st Semester
-              </MenuItem>
-            </Select>
-          </FormControl>
-          <TextField
-            fullWidth
-            label="Enter Capacity"
-            type="number"
-            variant="outlined"
-            value={capacity}
-            onChange={(e) => setCapacity(e.target.value)}
-            margin="normal"
-          />
-          <Box display="flex" justifyContent="space-between" mt={2}>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => {
-                setSectionTitle("");
-                setSelectedSemester("");
-                setCapacity("");
-              }}
-            >
-              Clear
-            </Button>
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
-              Save
-            </Button>
-          </Box>
-        </CardContent>
-      </Card>
+  useEffect(() => {
+    dispatch(fetchSemesters()); //  Dispatch action to fetch semesters
+  }, [dispatch]);
 
-      {/* Right Section: Saved Sections Table */}
-      <Card elevation={3} sx={{ backgroundColor: "#f5f5f5", padding: 3 }}>
-        <CardContent>
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
-            Saved Sections
-          </Typography>
-          <TextField
-            fullWidth
-            label="Search Sections"
-            variant="outlined"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            margin="normal"
-          />
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <b>Section</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>Semester</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>Capacity</b>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredSections.length > 0 ? (
-                  filteredSections.map((section, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{section.sectionTitle}</TableCell>
-                      <TableCell>{section.semester}</TableCell>
-                      <TableCell>{section.capacity}</TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={3} align="center">
-                      No sections available
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </CardContent>
-      </Card>
-    </Box>
+  return (
+    <div className="p-6 bg-green-600 h-screen text-white flex gap-4">
+      <div className="bg-green-700 p-4 rounded-lg w-1/3">
+        <h2 className="text-lg font-bold mb-4">
+          Semester Section Registration
+        </h2>
+        <label className="block mb-2">Section Title</label>
+        <input
+          type="text"
+          className="w-full p-2 rounded text-black"
+          value={sectionTitle}
+          onChange={(e) => setSectionTitle(e.target.value)}
+        />
+
+        <label className="block mt-4 mb-2">Select Semester</label>
+        <select
+          className="w-full p-2 rounded text-black"
+          value={semester}
+          onChange={(e) => setSemester(e.target.value)}
+        >
+          <option value="">Select Semester</option>
+          {semesters.length > 0 ? (
+            semesters.map((sem, index) => (
+              <option key={index} value={sem}>
+                {sem}
+              </option>
+            ))
+          ) : (
+            <option disabled>Loading...</option> // ✅ Prevent crash when fetching
+          )}
+        </select>
+        {/* <select
+          className="w-full p-2 rounded text-black"
+          value={semester}
+          onChange={(e) => setSemester(e.target.value)}
+        >
+          <option>2017-2021 BS-CS 7th Semester</option>
+          <option>2020-2024 BS-CS 1st Semester</option>
+          <option>2018-2022 BS-IT 5th Semester</option>
+        </select> */}
+
+        <label className="block mt-4 mb-2">Enter Capacity</label>
+        <input
+          type="number"
+          className="w-full p-2 rounded text-black"
+          value={capacity}
+          onChange={(e) => setCapacity(e.target.value)}
+        />
+
+        <div className="flex mt-4 gap-2">
+          <button
+            className="bg-blue-500 px-4 py-2 rounded"
+            onClick={handleSave}
+          >
+            Save
+          </button>
+          <button
+            className="bg-gray-400 px-4 py-2 rounded"
+            onClick={() => {
+              setSectionTitle("");
+              setCapacity("");
+            }}
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+
+      <div className="bg-green-700 p-4 rounded-lg w-2/3">
+        <h2 className="text-lg font-bold mb-4">Search</h2>
+        <input
+          type="text"
+          placeholder="Search by Section or Semester"
+          className="w-full p-2 rounded text-black mb-4"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <table className="w-full bg-white text-black rounded-lg">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="p-2">Section</th>
+              <th className="p-2">Semester</th>
+              <th className="p-2">Capacity</th>
+              <th className="p-2">Status</th>
+              <th className="p-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredSections.map((sec, index) => (
+              <tr key={index} className="text-center border-b">
+                <td className="p-2">{sec.title}</td>
+                <td className="p-2">{sec.semester}</td>
+                <td className="p-2">{sec.capacity}</td>
+                <td className="p-2">
+                  <input
+                    type="checkbox"
+                    checked={sec.status}
+                    onChange={() => handleStatusChange(index)}
+                  />
+                </td>
+                <td className="p-2">
+                  <button
+                    className="bg-red-500 px-2 py-1 text-white rounded"
+                    onClick={() => handleRemove(index)}
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 
+// export default SemesterSections;
 const WrappedSemesterSections = () => (
   <Provider store={store}>
     <SemesterSections />
