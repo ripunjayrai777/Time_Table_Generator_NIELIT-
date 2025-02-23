@@ -112,7 +112,7 @@ function Session() {
         {/* Session List Section */}
 
         <div className=" bg-white shadow-xl rounded-md p-8">
-          <h3 className="text-2xl font-semibold mb-6 text-green-600">
+          <h3 className="text-2xl font-semibold mb-6 text-[#1976d2]">
             Manage Sessions
           </h3>
 
@@ -125,7 +125,7 @@ function Session() {
                 placeholder="Search by session year..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-64 py-2 px-6 border rounded-lg focus:ring-2 focus:ring-indigo-400"
+                className="w-64 py-2 px-6 border rounded-lg focus:ring-2 focus:ring-[#1976d2]"
               />
             </div>
 
@@ -158,7 +158,7 @@ function Session() {
                   <h4 className="text-xl font-semibold">{session.title}</h4>
                   <span
                     className={`text-sm ${
-                      session.status ? "text-green-500" : "text-red-500"
+                      session.status ? "text-[#1976d2]" : "text-red-500"
                     }`}
                   >
                     {session.status ? "Active" : "Inactive"}

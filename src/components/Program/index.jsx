@@ -109,7 +109,7 @@ function Program() {
                 className="w-full px-4 py-2 focus:outline-none"
               />
             </div>
-            <div className="ml-4 text-green-600">
+            <div className="ml-4 text-[#1976d2]">
               <p className="font-semibold">
                 Active Programs: {activeProgramsCount}
               </p>
@@ -118,7 +118,7 @@ function Program() {
 
           {/* Table Section */}
           <div className="bg-white shadow-xl rounded-md p-8">
-            <h2 className="text-2xl font-semibold mb-6 text-green-600">
+            <h2 className="text-2xl font-semibold mb-6 text-[#1976d2]">
               Program List
             </h2>
             {filteredPrograms.length > 0 ? (
