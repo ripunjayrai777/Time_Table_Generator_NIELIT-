@@ -64,7 +64,7 @@ function Session() {
           <select
             value={startYear}
             onChange={(e) => setStartYear(e.target.value)}
-            className="w-full mb-4 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400"
+            className="w-full mb-4 p-3 border rounded-lg focus:ring-2 focus:ring-[#1976d2]"
           >
             <option value="">Select Year</option>
             {generateYears().map((year) => (
@@ -78,7 +78,7 @@ function Session() {
           <select
             value={endYear}
             onChange={(e) => setEndYear(e.target.value)}
-            className="w-full mb-4 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400"
+            className="w-full mb-4 p-3 border rounded-lg focus:ring-2 focus:ring-[#1976d2]"
           >
             <option value="">Select Year</option>
             {generateYears().map((year) => (

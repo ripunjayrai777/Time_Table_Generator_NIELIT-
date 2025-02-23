@@ -67,7 +67,7 @@ function LecturerManagement() {
             type="text"
             value={lecturerName}
             onChange={(e) => setLecturerName(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
             placeholder="Enter lecturer name"
           />
 
@@ -78,7 +78,7 @@ function LecturerManagement() {
             type="text"
             value={lecturerContact}
             onChange={(e) => setLecturerContact(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
             placeholder="Enter contact number"
           />
 
@@ -101,7 +101,7 @@ function LecturerManagement() {
             </button>
             <button
               onClick={handleSave}
-              className="flex items-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow-md"
+              className="flex items-center gap-2 px-4 py-3 bg-[#1976d2] hover:bg-white text-white hover:text-[#1976d2] transition-all rounded-md shadow-md"
             >
               <FaSave /> Save
             </button>
@@ -110,7 +110,7 @@ function LecturerManagement() {
 
         {/* Lecturer List Section */}
         <div className="col-span-8 bg-white p-8 rounded-md shadow-md">
-          <h3 className="text-2xl font-semibold mb-4 text-green-600">
+          <h3 className="text-2xl font-semibold mb-4 text-[#1976d2]">
             All Lecturers
           </h3>
 
@@ -119,7 +119,7 @@ function LecturerManagement() {
             placeholder="Search by name or contact..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           />
 
           {filteredLecturers.length > 0 ? (
