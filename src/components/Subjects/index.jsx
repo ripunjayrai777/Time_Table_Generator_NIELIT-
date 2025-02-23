@@ -59,7 +59,7 @@ function Subjects() {
             type="text"
             value={subjectTitle}
             onChange={(e) => setSubjectTitle(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
             placeholder="Enter subject title"
           />
 
@@ -69,7 +69,7 @@ function Subjects() {
           <select
             value={subjectType}
             onChange={(e) => setSubjectType(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           >
             <option value="">--- Select ---</option>
             <option value="Practical">Practical</option>
@@ -84,7 +84,7 @@ function Subjects() {
             min="1"
             value={subjectCredits}
             onChange={(e) => setSubjectCredits(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           />
 
           <div className="flex gap-4 mt-6">
@@ -96,7 +96,7 @@ function Subjects() {
             </button>
             <button
               onClick={handleSave}
-              className="flex items-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow-md"
+              className="flex items-center gap-2 px-4 py-3 bg-[#1976d2] hover:bg-white text-white hover:text-[#1976d2] rounded-md shadow-md"
             >
               <FaSave /> Save
             </button>
@@ -105,8 +105,8 @@ function Subjects() {
 
         {/* Subject List */}
         <div className="col-span-8 bg-white p-8 rounded-md shadow-md">
-          <h3 className="text-2xl font-semibold mb-4 text-green-600">
-            Subjects
+          <h3 className="text-2xl font-semibold mb-4 text-[#1976d2]">
+            Subjects List
           </h3>
           {subjects.length > 0 ? (
             <table className="w-full text-left">
