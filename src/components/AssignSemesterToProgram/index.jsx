@@ -66,12 +66,12 @@ const ProgramSemesterManagementApp = () => {
               placeholder="Program Semester Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full p-2 border rounded-md text-black"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
             />
             <select
               value={session}
               onChange={(e) => setSession(e.target.value)}
-              className="w-full p-2 border rounded-md text-black"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
             >
               <option value="">Select Session</option>
               {sessions.map((session, index) => (
@@ -83,7 +83,7 @@ const ProgramSemesterManagementApp = () => {
             <select
               value={program}
               onChange={(e) => setProgram(e.target.value)}
-              className="w-full p-2 border rounded-md text-black"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
             >
               <option value="">Select Program</option>
               {programs.map((program, index) => (
@@ -95,7 +95,7 @@ const ProgramSemesterManagementApp = () => {
             <select
               value={semester}
               onChange={(e) => setSemester(e.target.value)}
-              className="w-full p-2 border rounded-md text-black"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
             >
               <option value="">Select Semester</option>
               {semesters.map((semester, index) => (
@@ -109,7 +109,7 @@ const ProgramSemesterManagementApp = () => {
               placeholder="Enter Capacity"
               value={capacity}
               onChange={(e) => setCapacity(e.target.value)}
-              className="w-full p-2 border rounded-md text-black"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
             />
             <div className="flex items-center">
               <label className="mr-2">Program Semester Status:</label>
@@ -124,7 +124,7 @@ const ProgramSemesterManagementApp = () => {
           <div className="flex gap-4 mt-4">
             <button
               onClick={clearForm}
-              className="bg-yellow-500 text-black px-4 py-2 rounded-md flex items-center gap-2 hover:bg-yellow-700"
+              className="bg-yellow-500 text-black px-4 py-2 rounded-md flex items-center gap-2 hover:bg-white hover:text-yellow-600 transition-all"
             >
               <FaEraser /> Clear
             </button>
@@ -145,7 +145,7 @@ const ProgramSemesterManagementApp = () => {
             placeholder="Search Program Semester"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           />
           <div className="bg-white p-6 rounded-md shadow-lg">
             <table className="w-full border-collapse border border-gray-400">

@@ -82,14 +82,14 @@ const SemesterSections = () => {
         <label className="block mb-2">Section Title</label>
         <input
           type="text"
-          className="w-full p-2 rounded text-black"
+          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           value={sectionTitle}
           onChange={(e) => setSectionTitle(e.target.value)}
         />
 
         <label className="block mt-4 mb-2">Select Semester</label>
         <select
-          className="w-full p-2 rounded text-black"
+          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           value={semester}
           onChange={(e) => setSemester(e.target.value)}
         >
@@ -117,20 +117,20 @@ const SemesterSections = () => {
         <label className="block mt-4 mb-2">Enter Capacity</label>
         <input
           type="number"
-          className="w-full p-2 rounded text-black"
+          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           value={capacity}
           onChange={(e) => setCapacity(e.target.value)}
         />
 
         <div className="flex mt-4 gap-2">
           <button
-            className="bg-blue-500 px-4 py-2 rounded"
+            className="bg-[#1976d2] hover:bg-white text-white hover:text-[#1976d2] transition-all px-4 py-2 rounded"
             onClick={handleSave}
           >
             Save
           </button>
           <button
-            className="bg-gray-400 px-4 py-2 rounded"
+            className="bg-yellow-500 hover:bg-white text-white hover:text-yellow-600 transition-all px-4 py-2 rounded"
             onClick={() => {
               setSectionTitle("");
               setCapacity("");
@@ -142,11 +142,11 @@ const SemesterSections = () => {
       </div>
 
       <div className="bg-white p-4 rounded-lg w-2/3">
-        <h2 className="text-2xl font-semibold mb-4 text-green-600">Search</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-[#1976d2]">Search</h2>
         <input
           type="text"
           placeholder="Search by Section or Semester"
-          className="w-full p-2 rounded text-black mb-4"
+          className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
