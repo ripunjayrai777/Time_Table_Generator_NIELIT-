@@ -41,7 +41,7 @@ export default function DaysManager() {
         <input
           type="text"
           placeholder="Day Name"
-          className="w-full p-2 mb-4 border rounded-md"
+          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           value={dayName}
           onChange={(e) => setDayName(e.target.value)}
         />
@@ -56,7 +56,7 @@ export default function DaysManager() {
         </label>
         <div className="flex gap-4">
           <button
-            className="bg-[#1976d2] text-white py-2 px-4 rounded-lg hover:bg-white hover:text-[#1976d2]"
+            className="bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-white hover:text-yellow-600 transition-all"
             onClick={() => {
               setDayName("");
               setDayStatus(false);
@@ -65,7 +65,7 @@ export default function DaysManager() {
             Clear
           </button>
           <button
-            className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700"
+            className="bg-[#1976d2] text-white py-2 px-4 rounded-lg hover:bg-white hover:text-[#1976d2] transition-all"
             onClick={handleSave}
           >
             Save
@@ -74,7 +74,7 @@ export default function DaysManager() {
       </div>
 
       <div className="w-full md:w-2/3 p-6 bg-white rounded-lg">
-        <h2 className="text-2xl font-semibold text-green-600 mb-4">
+        <h2 className="text-2xl font-semibold text-[#1976d2] mb-4">
           Days List
         </h2>
         <div className="overflow-x-auto bg-white shadow-md rounded-lg">
