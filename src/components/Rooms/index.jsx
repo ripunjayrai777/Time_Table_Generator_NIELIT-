@@ -62,14 +62,14 @@ const RoomManagementApp = () => {
             placeholder="Room No"
             value={roomNo}
             onChange={(e) => setRoomNo(e.target.value)}
-            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           />
           <input
             type="number"
             placeholder="Room Capacity"
             value={roomCapacity}
             onChange={(e) => setRoomCapacity(e.target.value)}
-            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           />
           <div className="flex items-center mb-4">
             <label className="mr-2">Room Status (Active):</label>
@@ -89,7 +89,7 @@ const RoomManagementApp = () => {
             </button>
             <button
               onClick={handleAddRoom}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-700"
+              className="bg-[#1976d2] text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-white hover:text-[#1976d2] transition-all"
             >
               <FaSave /> Save
             </button>
@@ -98,7 +98,7 @@ const RoomManagementApp = () => {
 
         {/* Room List Section */}
         <div className="col-span-8 bg-white p-8 rounded-md shadow-md">
-          <h2 className="text-2xl font-semibold text-green-600 mb-4">
+          <h2 className="text-2xl font-semibold text-[#1976d2] mb-4">
             All Rooms
           </h2>
           <input
@@ -106,7 +106,7 @@ const RoomManagementApp = () => {
             placeholder="Search by Room or Capacity"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           />
           <table className="w-full table-auto border-collapse">
             <thead>
