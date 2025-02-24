@@ -130,14 +130,14 @@ const ProgramSemesterManagementApp = () => {
             </button>
             <button
               onClick={handleAdd}
-              className="bg-green-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-green-800"
+              className="bg-[#1976d2] text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-white hover:text-[#1976d2] transition-all"
             >
               <FaSave /> Save
             </button>
           </div>
         </div>
         <div className="col-span-8 bg-white p-8 rounded-md shadow-md">
-          <h2 className="text-2xl font-semibold text-green-600 mb-4">
+          <h2 className="text-2xl font-semibold text-[#1976d2] mb-4">
             All Program Semester List
           </h2>
           <input
@@ -145,7 +145,7 @@ const ProgramSemesterManagementApp = () => {
             placeholder="Search Program Semester"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           />
           <div className="bg-white p-6 rounded-md shadow-lg">
             <table className="w-full border-collapse border border-gray-400">

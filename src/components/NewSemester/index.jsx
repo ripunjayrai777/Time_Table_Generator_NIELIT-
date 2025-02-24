@@ -55,7 +55,7 @@ const NewSemester = () => {
             placeholder="Semester Name"
             value={semesterName}
             onChange={(e) => setSemesterName(e.target.value)}
-            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           />
           <div className="flex items-center mb-4">
             <label className="mr-2">Semester Status (Active):</label>
@@ -75,7 +75,7 @@ const NewSemester = () => {
             </button>
             <button
               onClick={handleAddSemester}
-              className="bg-green-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-green-800"
+              className="bg-[#1976d2] text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-white hover:text-[#1976d2] transition-all"
             >
               <FaSave /> Save
             </button>
@@ -84,7 +84,7 @@ const NewSemester = () => {
 
         {/* Semester List Section */}
         <div className="col-span-8 bg-white p-8 rounded-md shadow-md">
-          <h2 className="text-2xl font-semibold text-green-600 mb-4">
+          <h2 className="text-2xl font-semibold text-[#1976d2] mb-4">
             All Semesters List
           </h2>
           <input
@@ -92,7 +92,7 @@ const NewSemester = () => {
             placeholder="Search by Semester Name"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full p-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           />
           <table className="w-full table-auto border-collapse">
             <thead>
