@@ -67,12 +67,12 @@ const SemesterSubjects = () => {
             placeholder="Subject Title"
             value={subjectTitle}
             onChange={(e) => setSubjectTitle(e.target.value)}
-            className="w-full p-2 border rounded-md text-black"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           />
           <select
             value={semester}
             onChange={(e) => setSemester(e.target.value)}
-            className="w-full p-2 border rounded-md text-black mt-4"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2] mt-4"
           >
             <option value="">Select Semester</option>
             <option value="1st Semester">1st Semester</option>
@@ -81,7 +81,7 @@ const SemesterSubjects = () => {
           <select
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
-            className="w-full p-2 border rounded-md text-black mt-4"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2] mt-4"
           >
             <option value="">Select Subject</option>
             <option value="Demo1">Demo1 Subject</option>
@@ -99,13 +99,13 @@ const SemesterSubjects = () => {
                 setSemester("");
                 setSelectedSubject("");
               }}
-              className="bg-yellow-500 text-black px-4 py-2 rounded-md flex items-center gap-2 hover:bg-yellow-700"
+              className="bg-yellow-500 text-black px-4 py-2 rounded-md flex items-center gap-2 hover:bg-white hover:text-yellow-600 transition-all"
             >
               <FaEraser /> Clear
             </button>
             <button
               onClick={handleSave}
-              className="bg-green-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-green-800"
+              className="bg-[#1976d2] text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-white hover:text-[#1976d2] transition-all"
             >
               <FaSave /> Save
             </button>
@@ -113,7 +113,7 @@ const SemesterSubjects = () => {
         </div>
 
         <div className="col-span-8 bg-white p-8 rounded-md shadow-md">
-          <h2 className="text-2xl font-semibold text-green-600 mb-4">
+          <h2 className="text-2xl font-semibold text-[#1976d2] mb-4">
             Saved Subjects
           </h2>
           <input
@@ -121,7 +121,7 @@ const SemesterSubjects = () => {
             placeholder="Search Saved Subject"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 border rounded-md mb-4 text-black"
+            className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]"
           />
           <table className="w-full border-collapse border border-gray-400 mb-6">
             <thead>
