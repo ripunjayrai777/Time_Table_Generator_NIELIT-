@@ -29,9 +29,11 @@ const TimeTableGenerator = () => {
   };
 
   return (
-    <div className="flex flex-col items-center bg-green-200 min-h-screen p-6">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-xl font-bold mb-4">Time Table Generator</h2>
+    <div className="flex flex-col items-center bg-blue-50 min-h-screen p-6">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-xl font-bold mb-4 text-center">
+          Time Table Generator
+        </h2>
 
         {/* Date Pickers */}
         <div className="mb-4">
@@ -55,7 +57,7 @@ const TimeTableGenerator = () => {
         {/* Generate Button */}
         <button
           onClick={generateTimeTable}
-          className="bg-green-500 text-white px-4 py-2 rounded w-full hover:bg-green-600"
+          className="bg-[#1976d2] text-white px-4 py-2 rounded w-full hover:bg-white hover:text-[#1976d2] transition-all"
         >
           Auto Generate (All Time Tables)
         </button>
@@ -63,15 +65,23 @@ const TimeTableGenerator = () => {
 
       {/* Time Table Display */}
       {timeTable.length > 0 && (
-        <div className="mt-6 bg-white p-4 rounded-lg shadow-lg w-full max-w-lg">
-          <h3 className="text-lg font-bold">Generated Time Table</h3>
-          <ul className="mt-2">
+        <div className="mt-6 bg-white p-4 rounded-lg shadow-lg w-full max-w-4xl">
+          <h3 className="text-lg font-bold text-center mb-4">
+            Generated Time Table
+          </h3>
+
+          {/* Time Table Grid */}
+          {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {timeTable.map((entry, index) => (
-              <li key={index} className="border-b p-2">
-                📅 {entry.date} - {entry.task}
-              </li>
+              <div
+                key={index}
+                className="bg-green-100 p-4 rounded-lg shadow-md text-center"
+              >
+                <p className="font-bold">{entry.date}</p>
+                <p className="text-gray-600">{entry.task}</p>
+              </div>
             ))}
-          </ul>
+          </div> */}
         </div>
       )}
     </div>
