@@ -1,181 +1,144 @@
 import React, { useState, useRef, useEffect } from "react";
-import { IoBookOutline } from "react-icons/io5";
-import { SiSession } from "react-icons/si";
+import { IoBookOutline, IoPrintOutline } from "react-icons/io5";
+import { SiSession, SiGoogleclassroom } from "react-icons/si";
 import { GrHelpBook } from "react-icons/gr";
 import { FaPersonChalkboard } from "react-icons/fa6";
-import { SiGoogleclassroom } from "react-icons/si";
 import { LuGraduationCap } from "react-icons/lu";
 import { SlCalender } from "react-icons/sl";
 import { AiOutlineBorderInner } from "react-icons/ai";
-import { IoPrintOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 const TimeTable = () => {
-  const [dropdownOpenRL, setdropdownOpenRL] = useState(false);
-  const [dropdownOpenSemester, setdropdownOpenSemester] = useState(false);
-  const [dropdownOpenDays, setdropdownOpenDays] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState({
+    roomsLabs: false,
+    semester: false,
+    days: false,
+  });
 
-  // Refs for detecting outside clicks
-  const dropdownRefRL = useRef(null);
-  const dropdownRefSemester = useRef(null);
-  const dropdownRefDays = useRef(null);
+  const dropdownRefs = {
+    roomsLabs: useRef(null),
+    semester: useRef(null),
+    days: useRef(null),
+  };
 
-  // Handle clicks outside for all dropdowns
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        dropdownRefRL.current &&
-        !dropdownRefRL.current.contains(event.target)
-      ) {
-        setdropdownOpenRL(false);
-      }
-      if (
-        dropdownRefSemester.current &&
-        !dropdownRefSemester.current.contains(event.target)
-      ) {
-        setdropdownOpenSemester(false);
-      }
-      if (
-        dropdownRefDays.current &&
-        !dropdownRefDays.current.contains(event.target)
-      ) {
-        setdropdownOpenDays(false);
-      }
+      Object.keys(dropdownRefs).forEach((key) => {
+        if (
+          dropdownRefs[key].current &&
+          !dropdownRefs[key].current.contains(event.target)
+        ) {
+          setDropdownOpen((prev) => ({ ...prev, [key]: false }));
+        }
+      });
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const toggleDropdown = (menu) => {
+    setDropdownOpen((prev) => ({ ...prev, [menu]: !prev[menu] }));
+  };
+
   return (
-    <>
-      <div className="nav2 flex items-center justify-between gap-5 p-2 m-2 ml-7 mr-7">
-        <Link to="/program" className="hover:text-[#1976d2]">
-          <IoBookOutline className="text-[40px]" />
-          Program
+    <div className="nav2 flex flex-wrap items-center justify-between gap-5 p-4 bg-white shadow-md rounded-lg m-4">
+      {[
+        { to: "/program", icon: <IoBookOutline />, label: "Program" },
+        { to: "/session", icon: <SiSession />, label: "Session" },
+        { to: "/subjects", icon: <GrHelpBook />, label: "Subjects" },
+        { to: "/lecturers", icon: <FaPersonChalkboard />, label: "Lecturers" },
+      ].map(({ to, icon, label }) => (
+        <Link
+          key={label}
+          to={to}
+          className="flex flex-col items-center text-gray-700 hover:text-blue-600 transition duration-200"
+        >
+          <span className="text-3xl mb-1">{icon}</span>
+          <span className="text-sm font-medium">{label}</span>
         </Link>
-        <Link to="/session" className="hover:text-[#1976d2]">
-          <SiSession className="text-[40px]" />
-          Session
-        </Link>
-        <Link to="/subjects" className="hover:text-[#1976d2]">
-          <GrHelpBook className="text-[40px]" />
-          Subjects
-        </Link>
-        <Link to="/lecturers" className="hover:text-[#1976d2]">
-          <FaPersonChalkboard className="text-[40px]" />
-          Lecturers
-        </Link>
+      ))}
 
-        {/* Rooms/Labs Dropdown */}
-        <div className="relative" ref={dropdownRefRL}>
+      {/* Dropdowns */}
+      {[
+        {
+          key: "roomsLabs",
+          icon: <SiGoogleclassroom />,
+          label: "Rooms/Labs",
+          links: [
+            { to: "/rooms-labs/add-rooms", text: "Add Rooms" },
+            { to: "/rooms-labs/add-labs", text: "Add Labs" },
+          ],
+        },
+        {
+          key: "semester",
+          icon: <LuGraduationCap />,
+          label: "Semester",
+          links: [
+            { to: "/semesters/new-semester", text: "New Semester" },
+            {
+              to: "/semesters/assign-semester-to-program",
+              text: "Assign Semester",
+            },
+            { to: "/semesters/add-semester-sections", text: "Add Sections" },
+            { to: "/semesters/add-subject-to-semester", text: "Add Subject" },
+          ],
+        },
+        {
+          key: "days",
+          icon: <SlCalender />,
+          label: "Days",
+          links: [
+            { to: "/days/selection", text: "Days Selection" },
+            { to: "/days/slot", text: "Day & Time Slot" },
+          ],
+        },
+      ].map(({ key, icon, label, links }) => (
+        <div className="relative" ref={dropdownRefs[key]} key={key}>
           <button
-            className="items-center text-[16px] gap-2 cursor-pointer hover:text-[#1976d2]"
-            onClick={() => setdropdownOpenRL(!dropdownOpenRL)}
+            onClick={() => toggleDropdown(key)}
+            className="flex flex-col items-center text-gray-700 hover:text-blue-600 transition duration-200"
           >
-            <SiGoogleclassroom className="text-[40px]" /> Rooms/Labs
+            <span className="text-3xl mb-1">{icon}</span>
+            <span className="text-sm font-medium">{label}</span>
           </button>
-          {dropdownOpenRL && (
-            <div className="absolute bg-white shadow-md rounded-md mt-2 w-40">
-              <Link
-                to="/rooms-labs/add-rooms"
-                className="block px-4 py-2 hover:bg-gray-100 text-[14px]"
-                onClick={() => setdropdownOpenRL(false)}
-              >
-                Add Rooms
-              </Link>
-              <Link
-                to="/rooms-labs/add-labs"
-                className="block px-4 py-2 hover:bg-gray-100 text-[14px]"
-                onClick={() => setdropdownOpenRL(false)}
-              >
-                Add Labs
-              </Link>
+          {dropdownOpen[key] && (
+            <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-white shadow-lg rounded-lg w-44 z-10">
+              {links.map(({ to, text }) => (
+                <Link
+                  key={text}
+                  to={to}
+                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  onClick={() =>
+                    setDropdownOpen((prev) => ({ ...prev, [key]: false }))
+                  }
+                >
+                  {text}
+                </Link>
+              ))}
             </div>
           )}
         </div>
+      ))}
 
-        {/* Semester Dropdown */}
-        <div className="relative" ref={dropdownRefSemester}>
-          <button
-            className="items-center text-[16px] gap-2 cursor-pointer hover:text-[#1976d2]"
-            onClick={() => setdropdownOpenSemester(!dropdownOpenSemester)}
-          >
-            <LuGraduationCap className="text-[40px]" /> Semester
-          </button>
-          {dropdownOpenSemester && (
-            <div className="absolute bg-white shadow-md rounded-md mt-2 w-55">
-              <Link
-                to="/semesters/new-semester"
-                className="block px-4 py-2 hover:bg-gray-100 text-[14px]"
-                onClick={() => setdropdownOpenSemester(false)}
-              >
-                New Semester
-              </Link>
-              <Link
-                to="/semesters/assign-semester-to-program"
-                className="block px-4 py-2 hover:bg-gray-100 text-[14px]"
-                onClick={() => setdropdownOpenSemester(false)}
-              >
-                Assign Semester to Program
-              </Link>
-              <Link
-                to="/semesters/add-semester-sections"
-                className="block px-4 py-2 hover:bg-gray-100 text-[14px]"
-                onClick={() => setdropdownOpenSemester(false)}
-              >
-                Add Semester Sections
-              </Link>
-              <Link
-                to="/semesters/add-subject-to-semester"
-                className="block px-4 py-2 hover:bg-gray-100 text-[14px]"
-                onClick={() => setdropdownOpenSemester(false)}
-              >
-                Add Subject to Semester
-              </Link>
-            </div>
-          )}
-        </div>
-
-        {/* Days Dropdown */}
-        <div className="relative" ref={dropdownRefDays}>
-          <button
-            className="items-center text-[16px] gap-2 cursor-pointer hover:text-[#1976d2]"
-            onClick={() => setdropdownOpenDays(!dropdownOpenDays)}
-          >
-            <SlCalender className="text-[40px]" /> Days
-          </button>
-          {dropdownOpenDays && (
-            <div className="absolute bg-white shadow-md rounded-md mt-2 w-40">
-              <Link
-                to="/days/selection"
-                className="block px-4 py-2 hover:bg-gray-100 text-[14px]"
-                onClick={() => setdropdownOpenDays(false)}
-              >
-                Days Selection
-              </Link>
-              <Link
-                to="/days/slot"
-                className="block px-4 py-2 hover:bg-gray-100 text-[14px]"
-                onClick={() => setdropdownOpenDays(false)}
-              >
-                Day & Time Slot
-              </Link>
-            </div>
-          )}
-        </div>
-
-        {/* Generate Table Section */}
-        <Link to="/generate-table" className="hover:text-[#1976d2]">
-          <AiOutlineBorderInner className="text-[40px]" />
-          Generate Table
+      {/* Other Links */}
+      {[
+        {
+          to: "/generate-table",
+          icon: <AiOutlineBorderInner />,
+          label: "Generate Table",
+        },
+        { to: "/print", icon: <IoPrintOutline />, label: "Print" },
+      ].map(({ to, icon, label }) => (
+        <Link
+          key={label}
+          to={to}
+          className="flex flex-col items-center text-gray-700 hover:text-blue-600 transition duration-200"
+        >
+          <span className="text-3xl mb-1">{icon}</span>
+          <span className="text-sm font-medium">{label}</span>
         </Link>
-        <Link to="/print" className="hover:text-[#1976d2]">
-          <IoPrintOutline className="text-[40px]" />
-          Print
-        </Link>
-      </div>
-    </>
+      ))}
+    </div>
   );
 };
 
