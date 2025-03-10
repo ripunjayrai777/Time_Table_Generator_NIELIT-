@@ -340,7 +340,7 @@ const RoomManagementApp = () => {
                     <td className="border p-2 text-center">{room.name}</td>
                     <td className="border p-2 text-center">{room.capacity}</td>
                     <td className="border p-2 text-center">
-                      {room.status ? "Active" : "Inactive"}
+                      {room.available ? "Active" : "Inactive"}
                     </td>
                     <td className="border p-2 text-center">
                       <button
