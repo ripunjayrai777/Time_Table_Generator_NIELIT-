@@ -1,4 +1,162 @@
+// import * as React from "react";
+// import AppBar from "@mui/material/AppBar";
+// import Box from "@mui/material/Box";
+// import Toolbar from "@mui/material/Toolbar";
+// import IconButton from "@mui/material/IconButton";
+// import Typography from "@mui/material/Typography";
+// import Menu from "@mui/material/Menu";
+// import MenuIcon from "@mui/icons-material/Menu";
+// import Container from "@mui/material/Container";
+// import Avatar from "@mui/material/Avatar";
+// import Button from "@mui/material/Button";
+// import Tooltip from "@mui/material/Tooltip";
+// import MenuItem from "@mui/material/MenuItem";
+// import TimeTable from "../TimeTable"; // Import the TimeTable component
+// import { useState } from "react";
+
+// const pages = [
+//   "Home",
+//   "Management",
+//   "NIELIT Centers",
+//   "Student Zone",
+//   "Recruitment",
+//   "Time-Table",
+//   "About Us",
+// ];
+// const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+// function ResponsiveAppBar() {
+//   const [anchorElNav, setAnchorElNav] = React.useState(null);
+//   const [anchorElUser, setAnchorElUser] = React.useState(null);
+//   const [showTimeTable, setShowTimeTable] = useState(false); // State to handle TimeTable visibility
+
+//   const handleOpenNavMenu = (event) => {
+//     setAnchorElNav(event.currentTarget);
+//   };
+//   const handleOpenUserMenu = (event) => {
+//     setAnchorElUser(event.currentTarget);
+//   };
+
+//   const handleCloseNavMenu = () => {
+//     setAnchorElNav(null);
+//   };
+
+//   const handleCloseUserMenu = () => {
+//     setAnchorElUser(null);
+//   };
+
+//   // Page-specific click handlers
+//   const handlePageClick = (page) => {
+//     switch (page) {
+//       case "Home":
+//         alert("Navigating to Home");
+//         break;
+//       case "Management":
+//         alert("Navigating to Management");
+//         break;
+//       case "Time-Table":
+//         setShowTimeTable(true); // Show the TimeTable component
+//         break;
+//       default:
+//         alert(`Navigating to ${page}`);
+//     }
+//   };
+
+//   return (
+//     <>
+//       <AppBar position="static">
+//         <Container maxWidth="xl">
+//           <Toolbar disableGutters>
+//             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+//               <IconButton
+//                 size="large"
+//                 aria-label="account of current user"
+//                 aria-controls="menu-appbar"
+//                 aria-haspopup="true"
+//                 onClick={handleOpenNavMenu}
+//                 color="inherit"
+//               >
+//                 <MenuIcon />
+//               </IconButton>
+//               <Menu
+//                 id="menu-appbar"
+//                 anchorEl={anchorElNav}
+//                 anchorOrigin={{
+//                   vertical: "bottom",
+//                   horizontal: "left",
+//                 }}
+//                 keepMounted
+//                 transformOrigin={{
+//                   vertical: "top",
+//                   horizontal: "left",
+//                 }}
+//                 open={Boolean(anchorElNav)}
+//                 onClose={handleCloseNavMenu}
+//                 sx={{ display: { xs: "block", md: "none" } }}
+//               >
+//                 {pages.map((page) => (
+//                   <MenuItem key={page} onClick={() => handlePageClick(page)}>
+//                     <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+//                   </MenuItem>
+//                 ))}
+//               </Menu>
+//             </Box>
+
+//             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+//               {pages.map((page) => (
+//                 <Button
+//                   key={page}
+//                   onClick={() => handlePageClick(page)}
+//                   sx={{ my: 2, color: "white", display: "block" }}
+//                 >
+//                   {page}
+//                 </Button>
+//               ))}
+//             </Box>
+//             <Box sx={{ flexGrow: 0 }}>
+//               <Tooltip title="Open settings">
+//                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+//                   <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+//                 </IconButton>
+//               </Tooltip>
+//               <Menu
+//                 sx={{ mt: "45px" }}
+//                 id="menu-appbar"
+//                 anchorEl={anchorElUser}
+//                 anchorOrigin={{
+//                   vertical: "top",
+//                   horizontal: "right",
+//                 }}
+//                 keepMounted
+//                 transformOrigin={{
+//                   vertical: "top",
+//                   horizontal: "right",
+//                 }}
+//                 open={Boolean(anchorElUser)}
+//                 onClose={handleCloseUserMenu}
+//               >
+//                 {settings.map((setting) => (
+//                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
+//                     <Typography sx={{ textAlign: "center" }}>
+//                       {setting}
+//                     </Typography>
+//                   </MenuItem>
+//                 ))}
+//               </Menu>
+//             </Box>
+//           </Toolbar>
+//         </Container>
+//       </AppBar>
+//       {showTimeTable && <TimeTable />}{" "}
+//       {/* Render TimeTable component if showTimeTable is true */}
+//     </>
+//   );
+// }
+// export default ResponsiveAppBar;
+
 import * as React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import for navigation
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,7 +170,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import TimeTable from "../TimeTable"; // Import the TimeTable component
-import { useState } from "react";
+import api, { setAuthToken } from "../Store/apiClient"; // Import API client
 
 const pages = [
   "Home",
@@ -23,16 +181,21 @@ const pages = [
   "Time-Table",
   "About Us",
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [showTimeTable, setShowTimeTable] = useState(false); // State to handle TimeTable visibility
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [showTimeTable, setShowTimeTable] = useState(false);
+  const navigate = useNavigate(); // Hook for navigation
+
+  // Check if user is logged in
+  const token = localStorage.getItem("jwt");
+  const isAuthenticated = !!token;
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -45,7 +208,13 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  // Page-specific click handlers
+  // Logout function
+  const handleLogout = () => {
+    setAuthToken(null); // Remove token from API headers
+    navigate("/login"); // Redirect to login page
+  };
+
+  // Page navigation handler
   const handlePageClick = (page) => {
     switch (page) {
       case "Home":
@@ -55,7 +224,7 @@ function ResponsiveAppBar() {
         alert("Navigating to Management");
         break;
       case "Time-Table":
-        setShowTimeTable(true); // Show the TimeTable component
+        setShowTimeTable(true);
         break;
       default:
         alert(`Navigating to ${page}`);
@@ -67,89 +236,92 @@ function ResponsiveAppBar() {
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
+            {/* Mobile Menu */}
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
+                aria-label="menu"
                 onClick={handleOpenNavMenu}
                 color="inherit"
               >
                 <MenuIcon />
               </IconButton>
               <Menu
-                id="menu-appbar"
                 anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
-                sx={{ display: { xs: "block", md: "none" } }}
               >
                 {pages.map((page) => (
                   <MenuItem key={page} onClick={() => handlePageClick(page)}>
-                    <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+                    <Typography textAlign="center">{page}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
             </Box>
 
+            {/* Desktop Menu */}
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
                 <Button
                   key={page}
                   onClick={() => handlePageClick(page)}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{ color: "white" }}
                 >
                   {page}
                 </Button>
               ))}
             </Box>
+
+            {/* Auth Buttons */}
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
+              {isAuthenticated ? (
+                // Show avatar and logout when user is logged in
+                <Tooltip title="User Menu">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt="User Avatar"
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                // Show Register & Login buttons when not logged in
+                <>
+                  <Button color="inherit" onClick={() => navigate("/register")}>
+                    Register
+                  </Button>
+                  <Button color="inherit" onClick={() => navigate("/login")}>
+                    Login
+                  </Button>
+                </>
+              )}
+
+              {/* User Menu Dropdown */}
               <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
                 anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography sx={{ textAlign: "center" }}>
-                      {setting}
-                    </Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">Profile</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">Account</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">Dashboard</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
               </Menu>
             </Box>
           </Toolbar>
         </Container>
       </AppBar>
-      {showTimeTable && <TimeTable />}{" "}
-      {/* Render TimeTable component if showTimeTable is true */}
+      {showTimeTable && <TimeTable />} {/* Show TimeTable if selected */}
     </>
   );
 }
+
 export default ResponsiveAppBar;

@@ -22,6 +22,8 @@ import Print from "./components/Print";
 
 import Navbar from "./components/Navbar";
 import GenerateTable from "./components/GenerateTable";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -36,6 +38,8 @@ function App() {
         </div>
 
         <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/program" element={<Program />} />
           <Route path="/session" element={<Session />} />
           <Route path="/subjects" element={<Subjects />} />
