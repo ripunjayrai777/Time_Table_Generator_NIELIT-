@@ -219,7 +219,9 @@ function Program() {
 
   const fetchPrograms = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/programs"); // Adjust API endpoint
+      const response = await fetch(
+        "https://timetable-generator-43z2.onrender.com/api/programs"
+      ); // Adjust API endpoint
       const data = await response.json();
       setPrograms(data);
     } catch (error) {
@@ -237,11 +239,14 @@ function Program() {
     const programData = { name: newProgram, status };
 
     try {
-      const response = await fetch("http://localhost:5000/api/programs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(programData),
-      });
+      const response = await fetch(
+        "https://timetable-generator-43z2.onrender.com/api/programs",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(programData),
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to add program");
 
