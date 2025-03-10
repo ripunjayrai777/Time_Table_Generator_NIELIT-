@@ -179,8 +179,18 @@ const RoomManagementApp = () => {
   }, []);
 
   const fetchRooms = async () => {
+    // localStorage.getItem("accessToken") ||
+    //   "eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InJpcHVuamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzQxNTg2NDE1LCJleHAiOjE3NDE2NzI4MTV9.iUG6TElJKZ5Ph5QuTRe_mXY6AotKYPP3rZCB_9SwU-111iNrsWxQQJrC7NInp70u";
+    const token =
+      "eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InJpcHVuamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzQxNTg2NDE1LCJleHAiOjE3NDE2NzI4MTV9.iUG6TElJKZ5Ph5QuTRe_mXY6AotKYPP3rZCB_9SwU-111iNrsWxQQJrC7NInp70u";
+
     try {
-      const response = await axios.get(API_URL);
+      const response = await axios.get(API_URL, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(setRooms);
       setRooms(response.data);
     } catch (error) {
       console.error("Error fetching rooms:", error);
@@ -193,6 +203,13 @@ const RoomManagementApp = () => {
       return;
     }
 
+    const token = localStorage.getItem("accessToken"); // Retrieve token
+
+    if (!token) {
+      alert("Unauthorized: No token found. Please log in.");
+      return;
+    }
+
     const newRoom = {
       room: roomNo,
       capacity: roomCapacity,
@@ -200,11 +217,16 @@ const RoomManagementApp = () => {
     };
 
     try {
-      const response = await axios.post(API_URL, newRoom);
+      const response = await axios.post(API_URL, newRoom, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Send token in the header
+        },
+      });
+
       setRooms([...rooms, response.data]);
       clearForm();
     } catch (error) {
-      console.error("Error adding room:", error);
+      console.error("Error adding room:", error.response?.data || error);
     }
   };
 
@@ -215,18 +237,33 @@ const RoomManagementApp = () => {
   };
 
   const handleDelete = async (id) => {
+    // const token = localStorage.getItem("accessToken"); // Retrieve token
+    const token =
+      "eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InJpcHVuamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzQxNTg2NDE1LCJleHAiOjE3NDE2NzI4MTV9.iUG6TElJKZ5Ph5QuTRe_mXY6AotKYPP3rZCB_9SwU-111iNrsWxQQJrC7NInp70u";
+
+    if (!token) {
+      alert("Unauthorized: No token found. Please log in.");
+      return;
+    }
+
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      await axios.delete(`${API_URL}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Send token in the header
+        },
+      });
+
       setRooms(rooms.filter((room) => room._id !== id));
     } catch (error) {
-      console.error("Error deleting room:", error);
+      console.error("Error deleting room:", error.response?.data || error);
     }
   };
 
   const filteredRooms = rooms.filter(
     (room) =>
-      room.room.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      room.capacity.toString().includes(searchQuery)
+      (room.name &&
+        room.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (room.capacity && room.capacity.toString().includes(searchQuery))
   );
 
   return (
@@ -300,7 +337,7 @@ const RoomManagementApp = () => {
                 filteredRooms.map((room) => (
                   <tr key={room._id} className="even:bg-gray-50">
                     <td className="border p-2 text-center">{room._id}</td>
-                    <td className="border p-2 text-center">{room.room}</td>
+                    <td className="border p-2 text-center">{room.name}</td>
                     <td className="border p-2 text-center">{room.capacity}</td>
                     <td className="border p-2 text-center">
                       {room.status ? "Active" : "Inactive"}
