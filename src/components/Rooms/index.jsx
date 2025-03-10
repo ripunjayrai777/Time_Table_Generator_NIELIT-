@@ -163,7 +163,7 @@
 import React, { useState, useEffect } from "react";
 import { FaSave, FaEraser, FaTrashAlt } from "react-icons/fa";
 import axios from "axios";
-// import api from "../../redux/apiClient";
+import api from "../Store/apiClient";
 
 const API_URL =
   "https://timetable-generator-43z2.onrender.com/api/room/allRooms";
@@ -204,7 +204,7 @@ const RoomManagementApp = () => {
       return;
     }
 
-    const token = localStorage.getItem("accessToken"); // Retrieve token
+    const token = localStorage.getItem("jwt"); // Retrieve token
 
     if (!token) {
       alert("Unauthorized: No token found. Please log in.");
@@ -218,7 +218,7 @@ const RoomManagementApp = () => {
     };
 
     try {
-      const response = await axios.post(API_URL, newRoom, {
+      const response = await axios.post("API_URL", newRoom, {
         headers: {
           Authorization: `Bearer ${token}`, // Send token in the header
         },
@@ -238,9 +238,9 @@ const RoomManagementApp = () => {
   };
 
   const handleDelete = async (id) => {
-    // const token = localStorage.getItem("accessToken"); // Retrieve token
-    const token =
-      "eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InJpcHVuamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzQxNTg2NDE1LCJleHAiOjE3NDE2NzI4MTV9.iUG6TElJKZ5Ph5QuTRe_mXY6AotKYPP3rZCB_9SwU-111iNrsWxQQJrC7NInp70u";
+    const token = localStorage.getItem("jwt"); // Retrieve token
+    // const token =
+    //   "eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6InJpcHVuamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzQxNTg2NDE1LCJleHAiOjE3NDE2NzI4MTV9.iUG6TElJKZ5Ph5QuTRe_mXY6AotKYPP3rZCB_9SwU-111iNrsWxQQJrC7NInp70u";
 
     if (!token) {
       alert("Unauthorized: No token found. Please log in.");
