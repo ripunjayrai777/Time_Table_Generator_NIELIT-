@@ -294,7 +294,7 @@ function Program() {
   };
 
   const activeProgramsCount = programs.filter(
-    (program) => program.status
+    (program) => program.active
   ).length;
 
   return (
@@ -394,10 +394,10 @@ function Program() {
                         <td className="border p-2">
                           <span
                             className={`px-3 py-1 rounded-full text-white ${
-                              program.status ? "bg-green-500" : "bg-red-500"
+                              program.active ? "bg-green-500" : "bg-red-500"
                             }`}
                           >
-                            {program.status ? "Active" : "Inactive"}
+                            {program.active ? "Active" : "Inactive"}
                           </span>
                         </td>
                       </tr>
