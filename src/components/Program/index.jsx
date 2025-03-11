@@ -204,7 +204,7 @@ import React, { useState, useEffect } from "react";
 import { FaPlusCircle, FaTrashAlt, FaSearch } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import api from "../Store/apiClient";
 function Program() {
   const [programs, setPrograms] = useState([]);
   const [newProgram, setNewProgram] = useState("");
@@ -214,17 +214,35 @@ function Program() {
 
   // Fetch programs from backend
   useEffect(() => {
+    console.log("useEffect running....");
     fetchPrograms();
   }, []);
 
+  // const fetchPrograms = async () => {
+  //   try {
+  //     const response = await api.get("/program/all");
+  //   } catch (error) {
+  //     console.error("Error fetching programs:", error);
+  //     setPrograms([]); // Set an empty array to avoid .filter() errors
+  //   }
+  // };
   const fetchPrograms = async () => {
     try {
-      const response = await fetch(
-        "https://timetable-generator-43z2.onrender.com/api/programs"
-      ); // Adjust API endpoint
-      const data = await response.json();
-      setPrograms(data);
+      console.log("fetchPrograms() started...");
+      const response = await api.get("/program/all");
+
+      if (!response.data || !Array.isArray(response.data)) {
+        throw new Error("Invalid API response format");
+      }
+
+      console.log("Fetched Programs:", response.data); // Debugging
+      setPrograms(response.data); //  Now updating state
     } catch (error) {
+      console.error(
+        "Error fetching programs:",
+        error.response?.data || error.message
+      );
+      setPrograms([]); // Set empty array to avoid `.filter()` issues
       toast.error("Failed to fetch programs!");
     }
   };
@@ -240,7 +258,7 @@ function Program() {
 
     try {
       const response = await fetch(
-        "https://timetable-generator-43z2.onrender.com/api/programs",
+        "https://timetable-generator-43z2.onrender.com/api/program/all",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -260,9 +278,14 @@ function Program() {
     }
   };
 
-  const filteredPrograms = programs.filter((program) =>
-    program.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // const filteredPrograms = programs.filter((program) => {
+  //   program?.name?.toLowerCase().includes(searchQuery.toLowerCase());
+  // });
+  const filteredPrograms = searchQuery
+    ? programs.filter((program) =>
+        program?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : programs; // ✅ Show all if no search query
 
   const toggleSorting = () => {
     setPrograms((prev) =>
@@ -367,7 +390,7 @@ function Program() {
                         className="hover:bg-gray-50"
                       >
                         <td className="border p-2">{index + 1}</td>
-                        <td className="border p-2">{program.name}</td>
+                        <td className="border p-2">{program.title}</td>
                         <td className="border p-2">
                           <span
                             className={`px-3 py-1 rounded-full text-white ${
