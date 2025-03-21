@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import api from "../Store/apiClient";
 function Program() {
   const [programs, setPrograms] = useState([]);
-  const [newProgram, setNewProgram] = useState("");
+  const [title, setTitle] = useState("");
   const [status, setStatus] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [editingIndex, setEditingIndex] = useState(null);
@@ -39,19 +39,24 @@ function Program() {
 
   // Add new program to backend
   const handleAddProgram = async () => {
-    if (!newProgram.trim()) {
+    const token ="eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6ImFiaGF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzQyNTUxODczLCJleHAiOjE3NDI2MzgyNzN9.i6eVGoG9d0YaXkjobpZesUBhI4xijjDgqWSj6GYOOL218icU0tM0pTRHXObKQ3Iw"
+    if (!title.trim()) {
       toast.error("Program name cannot be empty!");
       return;
     }
 
-    const programData = { name: newProgram, active };
+    const programData = { title, active: status };
+    console.log("Posting Program Data:", programData); // Debugging
+
 
     try {
       const response = await fetch(
-        "https://timetable-generator-43z2.onrender.com/api/program/all",
+        "https://timetable-generator-43z2.onrender.com/api/program/add",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+           },
           body: JSON.stringify(programData),
         }
       );
@@ -60,11 +65,11 @@ function Program() {
 
       const addedProgram = await response.json();
       setPrograms([...programs, addedProgram]);
-      setNewProgram("");
+      setTitle("");
       setStatus(false);
       toast.success("Program added successfully!");
     } catch (error) {
-      toast.error("Error adding program!");
+      toast.error(`Error adding program!! : ${error}`);
     }
   };
 
@@ -99,8 +104,8 @@ function Program() {
           <label className="block text-gray-600 mb-2">Program Name:</label>
           <input
             type="text"
-            value={newProgram}
-            onChange={(e) => setNewProgram(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="w-full px-4 py-3 mb-4 border rounded-lg focus:ring-2 focus:ring-blue-400"
             placeholder="Enter program name"
           />
@@ -116,7 +121,7 @@ function Program() {
           <div className="flex gap-2">
             <button
               onClick={() => {
-                setNewProgram("");
+                setTitle("");
                 setStatus(false);
               }}
               className="px-5 py-2.5 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg shadow-md"
