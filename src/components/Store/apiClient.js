@@ -18,7 +18,9 @@ export const setAuthToken = (token) => {
     delete api.defaults.headers.common["Authorization"];
     localStorage.removeItem("jwt"); // Remove token if not provided
   }
+
 };
+
 
 // Load token from localStorage when app starts
 const jwt = localStorage.getItem("jwt");
