@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import { FaSave, FaEraser, FaTrashAlt } from "react-icons/fa";
 import api from "../Store/apiClient";
@@ -14,12 +12,10 @@ function LecturerManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [subjects, setSubjects] = useState([]);
   
-
   useEffect(() => {
     fetchSubjects();
   }, []);
 
-  
   const fetchSubjects = async () => {
     try {
       
@@ -101,10 +97,13 @@ function LecturerManagement() {
           <input type="text" value={lecturerDepartment} onChange={(e) => setLecturerDepartment(e.target.value)} className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]" placeholder="Enter department" />
 
           <label className="block mt-4 mb-3 font-semibold text-gray-800">Subject:</label>
+          
           <select value={lecturerSubject} onChange={(e) => setLecturerSubject(e.target.value)} className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1976d2]">
             <option value="">Select a subject</option>
             {subjects.map((subject) => (
-              <option key={subject.id} value={subject.subjectName}>{subject.subjectName}<span>{subject.code}</span></option>
+              <option key={subject.id} value={subject.subjectName}>
+                {subject.subjectName} <span className="!text-green-500">({subject.code})</span>
+              </option>
             ))}
           </select>
 
