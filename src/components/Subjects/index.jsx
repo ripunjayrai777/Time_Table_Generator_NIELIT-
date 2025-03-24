@@ -220,7 +220,7 @@ function Subjects() {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:5000/subjects/${id}`); //api in backend in not available ....edit in last
-      setSubjects(subjects.filter((subject) => subject.id !== id));
+      setSubjects(subjects.filter((subject) => subject.id !== id));// this feature will be add in future
       toast.success("Subject deleted successfully!");
     } catch (error) {
       console.error("Error deleting subject:", error);
