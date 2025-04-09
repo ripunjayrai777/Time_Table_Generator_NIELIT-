@@ -55,7 +55,7 @@ const SemesterSections = () => {
   const handleRemove = (index) => {
     setSections(sections.filter((_, i) => i !== index));
   };
-
+//chanhge handler 
   const handleStatusChange = (index) => {
     setSections(
       sections.map((sec, i) =>
