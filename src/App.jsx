@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Program from "./components/Program";
+import Lessons from "./components/Lessons";
 import Session from "./components/Session";
 import Subjects from "./components/Subjects";
 import Lecturers from "./components/Lecturers";
@@ -41,6 +42,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/program" element={<Program />} />
+          <Route path="/lessons" element={<Lessons />} />
           <Route path="/session" element={<Session />} />
           <Route path="/subjects" element={<Subjects />} />
           <Route path="/lecturers" element={<Lecturers />} />

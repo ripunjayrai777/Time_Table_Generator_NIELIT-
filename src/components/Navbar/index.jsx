@@ -16,6 +16,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import TimeTable from "../TimeTable"; // Import the TimeTable component
 import api, { setAuthToken } from "../Store/apiClient"; // Import API client
+import TimeTable2 from "../TimeTable2";
 
 const pages = [
   "Home",
@@ -175,7 +176,7 @@ function ResponsiveAppBar() {
         </Container>
       </AppBar>
       {showTimeTable && <TimeTable />} {/* Show TimeTable if selected */}
-      {showNewTimeTable && <div>New Time Table Component Here</div>}
+      {showNewTimeTable && <TimeTable2/>} {/* Show New TimeTable if selected */}
     </>
   );
 }
