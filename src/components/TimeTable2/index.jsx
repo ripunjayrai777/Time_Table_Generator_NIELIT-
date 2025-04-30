@@ -44,9 +44,11 @@ const TimeTable2 = () => {
     <div className="nav2 flex flex-wrap items-center justify-between gap-5 p-4 bg-white shadow-md rounded-lg m-4">
       {[
         { to: "/lessons", icon: <IoBookOutline />, label: "Lessons" },
+        { to: "/rooms-labs/add-rooms", icon: <SiGoogleclassroom />, label: "Rooms" },
+        { to: "/days/selection", icon: <SlCalender />, label: "Days" },
         // { to: "/session", icon: <SiSession />, label: "Session" },
-        { to: "/subjects", icon: <GrHelpBook />, label: "Subjects" },
-        { to: "/lecturers", icon: <FaPersonChalkboard />, label: "Lecturers" },
+        // { to: "/subjects", icon: <GrHelpBook />, label: "Subjects" },
+        // { to: "/lecturers", icon: <FaPersonChalkboard />, label: "Lecturers" },
       ].map(({ to, icon, label }) => (
         <Link
           key={label}
@@ -59,7 +61,7 @@ const TimeTable2 = () => {
       ))}
 
       {/* Dropdowns */}
-      {[
+      {/* {[
         {
           key: "roomsLabs",
           icon: <SiGoogleclassroom />,
@@ -118,7 +120,7 @@ const TimeTable2 = () => {
             </div>
           )}
         </div>
-      ))}
+      ))} */}
 
       {/* Other Links */}
       {[
