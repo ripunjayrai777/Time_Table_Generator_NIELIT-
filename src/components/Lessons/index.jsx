@@ -155,7 +155,7 @@ function Lessons() {
   };
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
+    <div className="p-8 bg-blue-50 min-h-screen">
       <ToastContainer />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="bg-white p-6 rounded-2xl shadow-md">
