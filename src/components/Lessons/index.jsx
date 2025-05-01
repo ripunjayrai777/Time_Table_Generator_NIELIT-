@@ -270,6 +270,53 @@ function Lessons() {
         </div>
 
         {/* Table stays same */}
+        <div className="bg-white p-6 rounded-2xl shadow-md">
+  <h2 className="text-2xl font-semibold mb-4 text-blue-700">Scheduled Lessons</h2>
+  {lessons.length === 0 ? (
+    <p className="text-gray-500">No lessons scheduled.</p>
+  ) : (
+    <table className="w-full table-auto text-left border-collapse">
+      <thead>
+        <tr className="bg-blue-100 text-blue-800">
+          <th className="p-2">Subject</th>
+          <th className="p-2">Teacher</th>
+          <th className="p-2">Day</th>
+          <th className="p-2">Time</th>
+          <th className="p-2">Room</th>
+          <th className="p-2 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {lessons.map((lesson) => (
+          <tr key={lesson.id} className="border-t hover:bg-blue-50">
+            <td className="p-2">{lesson.subject}</td>
+            <td className="p-2">{lesson.teacher}</td>
+            <td className="p-2">{lesson.dayTimeSlot?.dayOfWeek}</td>
+            <td className="p-2">
+              {lesson.dayTimeSlot?.startTime} - {lesson.dayTimeSlot?.endTime}
+            </td>
+            <td className="p-2">{lesson.room?.name}</td>
+            <td className="p-2 text-center flex justify-center gap-3">
+              <button
+                onClick={() => handleEdit(lesson)}
+                className="text-yellow-500 hover:text-yellow-700"
+              >
+                <FaEdit />
+              </button>
+              <button
+                onClick={() => handleDelete(lesson.id)}
+                className="text-red-500 hover:text-red-700"
+              >
+                <FaTrashAlt />
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
+</div>
+
         {/* ... */}
       </div>
     </div>
@@ -277,4 +324,3 @@ function Lessons() {
 }
 
 export default Lessons;
-//comdkdk
