@@ -102,7 +102,7 @@ const TimeTableGenerator = () => {
     setError(null);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/generate", {
+      const response = await axios.post("https://timetable-generator-latest.onrender.com/api/timetable/generate", {
         startDate,
         endDate,
       });

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaSave, FaEraser, FaTrashAlt } from "react-icons/fa";
 import axios from "axios";
 
-const API_URL = "https://timetable-generator-43z2.onrender.com/api/room/allRooms";
+const API_URL = "https://timetable-generator-latest.onrender.com/api/room/allRooms";
 
 const RoomManagementApp = () => {
   const [rooms, setRooms] = useState([]);
