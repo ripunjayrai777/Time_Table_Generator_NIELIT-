@@ -16,7 +16,7 @@ const Register = () => {
 
     try {
       await api.post(
-        "https://timetable-generator-43z2.onrender.com/api/auth/register",
+        "https://timetable-generator-latest.onrender.com/api/auth/register",
         { username, email, password }
       );
       navigate("/login"); // Redirect to login page after successful registration

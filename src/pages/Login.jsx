@@ -15,7 +15,7 @@ const Login = () => {
 
     try {
       const response = await api.post(
-        "https://timetable-generator-43z2.onrender.com/api/auth/login",
+        "https://timetable-generator-latest.onrender.com/api/auth/login",
         { email, password }
       );
       const { token } = response.data;

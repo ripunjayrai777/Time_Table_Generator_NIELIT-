@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE_URL = "https://timetable-generator-43z2.onrender.com/api"; // Change this to match your backend URL
+export const API_BASE_URL = "https://timetable-generator-latest.onrender.com/api"; // Change this to match your backend URL
 
 const api = axios.create({
   baseURL: API_BASE_URL,
