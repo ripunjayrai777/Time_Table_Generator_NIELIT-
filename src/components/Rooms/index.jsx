@@ -1,46 +1,24 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FaSave, FaEraser, FaTrashAlt } from "react-icons/fa";
-import axios from "axios";
-
-const API_URL = "https://timetable-generator-latest.onrender.com/api/room/allRooms";
+import { fetchRooms, addRoom, deleteRoom } from "../../redux/Room/roomSlice";
 
 const RoomManagementApp = () => {
-  const [rooms, setRooms] = useState([]);
+  const dispatch = useDispatch();
+  const { rooms, loading } = useSelector((state) => state.rooms);
+
   const [roomNo, setRoomNo] = useState("");
   const [roomCapacity, setRoomCapacity] = useState("");
   const [roomStatus, setRoomStatus] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    fetchRooms();
-  }, []);
-
-  const fetchRooms = async () => {
-    const token =
-      "eyJhbGciOiJIUzM4NCJ9.eyJlbWFpbCI6ImFiaGF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzQyNTUxODczLCJleHAiOjE3NDI2MzgyNzN9.i6eVGoG9d0YaXkjobpZesUBhI4xijjDgqWSj6GYOOL218icU0tM0pTRHXObKQ3Iw";
-
-    try {
-      const response = await axios.get(API_URL, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setRooms(response.data);
-    } catch (error) {
-      console.error("Error fetching rooms:", error);
-    }
-  };
+    dispatch(fetchRooms());
+  }, [dispatch]);
 
   const handleAddRoom = async () => {
     if (!roomNo || !roomCapacity) {
       alert("Please fill all fields.");
-      return;
-    }
-
-    const token = localStorage.getItem("jwt");
-
-    if (!token) {
-      alert("Unauthorized: No token found. Please log in.");
       return;
     }
 
@@ -50,18 +28,8 @@ const RoomManagementApp = () => {
       status: roomStatus,
     };
 
-    try {
-      const response = await axios.post(API_URL, newRoom, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setRooms([...rooms, response.data]);
-      clearForm();
-    } catch (error) {
-      console.error("Error adding room:", error.response?.data || error);
-    }
+    dispatch(addRoom(newRoom));
+    clearForm();
   };
 
   const clearForm = () => {
@@ -70,25 +38,8 @@ const RoomManagementApp = () => {
     setRoomStatus(false);
   };
 
-  const handleDelete = async (id) => {
-    const token = localStorage.getItem("jwt");
-
-    if (!token) {
-      alert("Unauthorized: No token found. Please log in.");
-      return;
-    }
-
-    try {
-      await axios.delete(`${API_URL}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setRooms(rooms.filter((room) => room._id !== id));
-    } catch (error) {
-      console.error("Error deleting room:", error.response?.data || error);
-    }
+  const handleDelete = (id) => {
+    dispatch(deleteRoom(id));
   };
 
   const filteredRooms = rooms.filter(
@@ -200,5 +151,3 @@ const RoomManagementApp = () => {
 };
 
 export default RoomManagementApp;
-//hhhh
-//hhh

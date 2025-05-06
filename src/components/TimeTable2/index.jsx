@@ -9,10 +9,14 @@ const TimeTable2 = () => {
   const location = useLocation();
 
   const navItems = [
+    { to: "/room", icon: <SiGoogleclassroom />, label: "Rooms" },
+    { to: "/days", icon: <SlCalender />, label: "Days" },
     { to: "/lessons", icon: <IoBookOutline />, label: "Lessons" },
-    { to: "/rooms-labs/add-rooms", icon: <SiGoogleclassroom />, label: "Rooms" },
-    { to: "/days/selection", icon: <SlCalender />, label: "Days" },
-    { to: "/generate-table", icon: <AiOutlineBorderInner />, label: "Generate" },
+    {
+      to: "/generate-table",
+      icon: <AiOutlineBorderInner />,
+      label: "Generate",
+    },
     { to: "/print", icon: <IoPrintOutline />, label: "Print" },
   ];
 
@@ -31,7 +35,9 @@ const TimeTable2 = () => {
             >
               <div
                 className={`p-4 rounded-full text-2xl transition ${
-                  isActive ? "bg-blue-100" : "bg-gray-100 group-hover:bg-blue-100"
+                  isActive
+                    ? "bg-blue-100"
+                    : "bg-gray-100 group-hover:bg-blue-100"
                 }`}
               >
                 {icon}

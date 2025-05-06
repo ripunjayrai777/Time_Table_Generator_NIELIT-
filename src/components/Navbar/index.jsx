@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import for navigation
@@ -26,20 +25,20 @@ const pages = [
   "Recruitment",
   "Time-Table",
   "About Us",
-  "New Time Table"
+  "New Time Table",
 ];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [showTimeTable, setShowTimeTable] = useState(false);
-  const [showNewTimeTable, setShowNewTimeTable] = useState(false); 
+  const [showNewTimeTable, setShowNewTimeTable] = useState(false);
   const navigate = useNavigate(); // Hook for navigation
 
   // Check if user is logged in
   const token = localStorage.getItem("jwt");
   const isAuthenticated = !!token;
-
+  console.log("isAuthentication : ", isAuthenticated);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -85,7 +84,6 @@ function ResponsiveAppBar() {
         setShowNewTimeTable(false);
     }
   };
-  
 
   return (
     <>
@@ -176,7 +174,8 @@ function ResponsiveAppBar() {
         </Container>
       </AppBar>
       {showTimeTable && <TimeTable />} {/* Show TimeTable if selected */}
-      {showNewTimeTable && <TimeTable2/>} {/* Show New TimeTable if selected */}
+      {showNewTimeTable && <TimeTable2 />}{" "}
+      {/* Show New TimeTable if selected */}
     </>
   );
 }

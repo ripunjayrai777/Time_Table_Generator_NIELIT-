@@ -1,10 +1,13 @@
 // Redux Store (redux/store.js)
 import { configureStore } from "@reduxjs/toolkit";
-import subjectsReducer from "./subjectsSlice";
+import authReducer from "./Auth/authSlice";
+import roomReducer from "./Room/roomSlice";
 
 export const store = configureStore({
   reducer: {
-    subjects: subjectsReducer,
+    auth: authReducer,
+    room: roomReducer,
   },
 });
+
 export default store;
