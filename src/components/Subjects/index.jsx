@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { FaSave, FaTrashAlt, FaEraser } from "react-icons/fa";
 import { toast } from "react-toastify";
-import api from "../Store/apiClient";
+
 
 function Subjects() {
   const [subjectName, setSubjectName] = useState("");

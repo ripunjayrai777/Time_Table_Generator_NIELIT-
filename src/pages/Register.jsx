@@ -1,28 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { TextField, Button, Container, Typography, Box } from "@mui/material";
-import api from "../components/Store/apiClient";
+import { registerUser } from "../redux/Auth/authSlice";
 
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { loading, error } = useSelector((state) => state.auth);
+
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: ""
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setError("");
-
-    try {
-      await api.post(
-        "https://timetable-generator-latest.onrender.com/api/auth/register",
-        { username, email, password }
-      );
-      navigate("/login"); // Redirect to login page after successful registration
-    } catch (err) {
-      setError("Registration failed. Try again.");
-    }
+    
+    dispatch(registerUser({
+      name: formData.username,
+      email: formData.email,
+      password: formData.password,
+      navigate
+    }));
   };
 
   return (
@@ -32,31 +40,34 @@ const Register = () => {
         {error && <Typography color="error">{error}</Typography>}
         <form onSubmit={handleRegister}>
           <TextField
+            name="username"
             label="Username"
             variant="outlined"
             fullWidth
             margin="normal"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={formData.username}
+            onChange={handleChange}
             required
           />
           <TextField
+            name="email"
             label="Email"
             variant="outlined"
             fullWidth
             margin="normal"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleChange}
             required
           />
           <TextField
+            name="password"
             label="Password"
             type="password"
             variant="outlined"
             fullWidth
             margin="normal"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleChange}
             required
           />
           <Button
@@ -65,8 +76,9 @@ const Register = () => {
             color="primary"
             fullWidth
             sx={{ mt: 2 }}
+            disabled={loading}
           >
-            Register
+            {loading ? "Registering..." : "Register"}
           </Button>
         </form>
         <Typography sx={{ mt: 2 }}>

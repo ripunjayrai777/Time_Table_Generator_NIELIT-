@@ -57,7 +57,7 @@ const authSlice = createSlice({
   initialState: {
     user: null,
     accessToken: localStorage.getItem("jwt"),
-    // refreshToken: localStorage.getItem("refreshToken"),
+    refreshToken: localStorage.getItem("refreshToken"),
     loading: false,
     error: null,
   },

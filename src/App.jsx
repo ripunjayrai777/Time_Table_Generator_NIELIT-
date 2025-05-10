@@ -6,7 +6,7 @@ import { store } from "./redux/store";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Lessons from "./components/Lessons/index";
-import DayTimeSlot from "./components/DayTimeSlot";
+import Days from "./components/Days";
 import GenerateTable from "./components/GenerateTable/index";
 import Room from "./components/Rooms";
 import Header from "./components/Header";
@@ -33,7 +33,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/lessons" element={<Lessons />} />
-            <Route path="/days" element={<DayTimeSlot />} />
+            <Route path="/days" element={<Days />} />
             <Route path="/generate-table" element={<GenerateTable />} />
             <Route path="/print" element={<Print />} />
             <Route path="/time-table" element={<TimeTable />} />

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaPlusCircle, FaTrashAlt, FaEdit } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import api from "../Store/apiClient";
+
 
 function Lessons() {
   const [lessons, setLessons] = useState([]);

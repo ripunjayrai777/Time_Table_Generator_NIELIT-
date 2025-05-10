@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import for navigation
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/Auth/authSlice";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,8 +15,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import TimeTable from "../TimeTable"; // Import the TimeTable component
-import api, { setAuthToken } from "../Store/apiClient"; // Import API client
+
 import TimeTable2 from "../TimeTable2";
 
 const pages = [
@@ -29,16 +30,17 @@ const pages = [
 ];
 
 function ResponsiveAppBar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, accessToken } = useSelector((state) => state.auth);
+
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [showTimeTable, setShowTimeTable] = useState(false);
   const [showNewTimeTable, setShowNewTimeTable] = useState(false);
-  const navigate = useNavigate(); // Hook for navigation
 
-  // Check if user is logged in
-  const token = localStorage.getItem("jwt");
-  const isAuthenticated = !!token;
-  console.log("isAuthentication : ", isAuthenticated);
+  const isAuthenticated = !!accessToken;
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -55,31 +57,44 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  // Logout function
   const handleLogout = () => {
-    setAuthToken(null); // Remove token from API headers
-    navigate("/login"); // Redirect to login page
+    dispatch(logout());
+    navigate("/login");
+    handleCloseUserMenu();
   };
 
-  // Page navigation handler
   const handlePageClick = (page) => {
+    handleCloseNavMenu();
+    
     switch (page) {
       case "Home":
-        alert("Navigating to Home");
+        navigate("/");
         break;
       case "Management":
-        alert("Navigating to Management");
+        if (!isAuthenticated) {
+          navigate("/login");
+          return;
+        }
+        navigate("/management");
         break;
       case "Time-Table":
-        setShowTimeTable((prev) => !prev); // toggle visibility
-        setShowNewTimeTable(false); // close other components
+        if (!isAuthenticated) {
+          navigate("/login");
+          return;
+        }
+        setShowTimeTable((prev) => !prev);
+        setShowNewTimeTable(false);
         break;
       case "New Time Table":
-        setShowNewTimeTable((prev) => !prev); // toggle visibility
-        setShowTimeTable(false); // close other components
+        if (!isAuthenticated) {
+          navigate("/login");
+          return;
+        }
+        setShowNewTimeTable((prev) => !prev);
+        setShowTimeTable(false);
         break;
       default:
-        alert(`Navigating to ${page}`);
+        navigate(`/${page.toLowerCase().replace(" ", "-")}`);
         setShowTimeTable(false);
         setShowNewTimeTable(false);
     }
@@ -119,63 +134,63 @@ function ResponsiveAppBar() {
                 <Button
                   key={page}
                   onClick={() => handlePageClick(page)}
-                  sx={{ color: "white" }}
+                  sx={{ color: "white", my: 2 }}
                 >
                   {page}
                 </Button>
               ))}
             </Box>
 
-            {/* Auth Buttons */}
+            {/* Auth Section */}
             <Box sx={{ flexGrow: 0 }}>
               {isAuthenticated ? (
-                // Show avatar and logout when user is logged in
-                <Tooltip title="User Menu">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar
-                      alt="User Avatar"
-                      src="/static/images/avatar/2.jpg"
-                    />
-                  </IconButton>
-                </Tooltip>
-              ) : (
-                // Show Register & Login buttons when not logged in
                 <>
-                  <Button color="inherit" onClick={() => navigate("/register")}>
+                  <Tooltip title="Open settings">
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Avatar alt={user?.name || "User"} src="/static/images/avatar/2.jpg" />
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    anchorEl={anchorElUser}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    <MenuItem onClick={() => {
+                      handleCloseUserMenu();
+                      navigate("/profile");
+                    }}>
+                      <Typography textAlign="center">Profile</Typography>
+                    </MenuItem>
+                    <MenuItem onClick={handleLogout}>
+                      <Typography textAlign="center">Logout</Typography>
+                    </MenuItem>
+                  </Menu>
+                </>
+              ) : (
+                <>
+                  <Button
+                    color="inherit"
+                    onClick={() => navigate("/register")}
+                    sx={{ ml: 1 }}
+                  >
                     Register
                   </Button>
-                  <Button color="inherit" onClick={() => navigate("/login")}>
+                  <Button
+                    color="inherit"
+                    onClick={() => navigate("/login")}
+                    sx={{ ml: 1 }}
+                  >
                     Login
                   </Button>
                 </>
               )}
-
-              {/* User Menu Dropdown */}
-              <Menu
-                anchorEl={anchorElUser}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">Profile</Typography>
-                </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">Account</Typography>
-                </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">Dashboard</Typography>
-                </MenuItem>
-                <MenuItem onClick={handleLogout}>
-                  <Typography textAlign="center">Logout</Typography>
-                </MenuItem>
-              </Menu>
             </Box>
           </Toolbar>
         </Container>
       </AppBar>
-      {showTimeTable && <TimeTable />} {/* Show TimeTable if selected */}
-      {showNewTimeTable && <TimeTable2 />}{" "}
-      {/* Show New TimeTable if selected */}
+      
+      {showTimeTable && <TimeTable />}
+      {showNewTimeTable && <TimeTable2 />}
     </>
   );
 }
