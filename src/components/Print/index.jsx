@@ -1,7 +1,7 @@
 import React from "react";
 
 const Print = () => {
-  return <div>Print page jjfjfj</div>;
+  return <div>Printjfj</div>;
 }; 
 
 export default Print;
