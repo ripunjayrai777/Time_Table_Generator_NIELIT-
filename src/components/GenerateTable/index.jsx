@@ -1,89 +1,16 @@
-// import React, { useState } from "react";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-
-// const TimeTableGenerator = () => {
-//   const [startDate, setStartDate] = useState(new Date());
-//   const [endDate, setEndDate] = useState(new Date());
-//   const [timeTable, setTimeTable] = useState([]);
-
-//   // Generate timetable
-//   const generateTimeTable = () => {
-//     if (startDate > endDate) {
-//       alert("Start date cannot be after End date!");
-//       return;
-//     }
-
-//     let currentDate = new Date(startDate);
-//     let generatedTable = [];
-
-//     while (currentDate <= endDate) {
-//       generatedTable.push({
-//         date: currentDate.toDateString(),
-//         task: "Scheduled Task", // You can customize this
-//       });
-//       currentDate.setDate(currentDate.getDate() + 1);
-//     }
-
-//     setTimeTable(generatedTable);
-//   };
-
-//   return (
-//     <div className="flex flex-col items-center bg-blue-50 min-h-screen p-6">
-//       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-//         <h2 className="text-xl font-bold mb-4 text-center">
-//           Time Table Generator
-//         </h2>
-
-//         {/* Date Pickers */}
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Select Start Date:</label>
-//           <DatePicker
-//             selected={startDate}
-//             onChange={(date) => setStartDate(date)}
-//             className="border p-2 w-full rounded"
-//           />
-//         </div>
-
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Select End Date:</label>
-//           <DatePicker
-//             selected={endDate}
-//             onChange={(date) => setEndDate(date)}
-//             className="border p-2 w-full rounded"
-//           />
-//         </div>
-
-//         {/* Generate Button */}
-//         <button
-//           onClick={generateTimeTable}
-//           className="bg-[#1976d2] text-white px-4 py-2 rounded w-full hover:bg-white hover:text-[#1976d2] transition-all"
-//         >
-//           Auto Generate (All Time Tables)
-//         </button>
-//       </div>
-
-//       {/* Time Table Display */}
-//       {timeTable.length > 0 && (
-//         <div className="mt-6 bg-white p-4 rounded-lg shadow-lg w-full max-w-4xl">
-//           <h3 className="text-lg font-bold text-center mb-4">
-//             Generated Time Table
-//           </h3>
-
-         
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default TimeTableGenerator;
-
 
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios"; // For API call
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  Button,
+  CircularProgress,
+} from "@mui/material";
+import { Loader2 } from "lucide-react";
 
 const TimeTableGenerator = () => {
   const [startDate, setStartDate] = useState(new Date());
@@ -102,15 +29,16 @@ const TimeTableGenerator = () => {
     setError(null);
 
     try {
-      const response = await axios.post("https://timetable-generator-latest.onrender.com/api/timetable/generate", {
-        startDate,
-        endDate,
+      const params = new URLSearchParams({
+        start: startDate.toISOString(),
+        end: endDate.toISOString(),
       });
-
-      setTimeTable(response.data); // Expecting an array of objects
+      const res = await fetch(`/api/timetable?${params.toString()}`);
+      if (!res.ok) throw new Error("Failed to fetch timetable");
+      const data = await res.json();
+      setTimeTable(data);
     } catch (err) {
-      console.error(err);
-      setError("Failed to fetch timetable.");
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -124,7 +52,7 @@ const TimeTableGenerator = () => {
         </h2>
 
         <div className="mb-4">
-          <label className="block text-gray-700">Select Start Date:</label>
+          <label className="block text-gray-700 mb-1">Select Start Date:</label>
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
@@ -133,7 +61,7 @@ const TimeTableGenerator = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700">Select End Date:</label>
+          <label className="block text-gray-700 mb-1">Select End Date:</label>
           <DatePicker
             selected={endDate}
             onChange={(date) => setEndDate(date)}
@@ -141,39 +69,59 @@ const TimeTableGenerator = () => {
           />
         </div>
 
-        <button
+        <Button
           onClick={generateTimeTable}
-          className="bg-[#1976d2] text-white px-4 py-2 rounded w-full hover:bg-white hover:text-[#1976d2] transition-all"
+          variant="contained"
+          color="primary"
+          fullWidth
           disabled={loading}
+          startIcon={loading && <Loader2 className="animate-spin" />}
         >
-          {loading ? "Generating..." : "Auto Generate (All Time Tables)"}
-        </button>
+          {loading ? "Generating…" : "Auto Generate (All Time Tables)"}
+        </Button>
 
-        {error && <p className="text-red-600 mt-2">{error}</p>}
+        {error && (
+          <p className="text-red-600 text-sm mt-2 text-center">{error}</p>
+        )}
       </div>
 
       {timeTable.length > 0 && (
-        <div className="mt-6 bg-white p-4 rounded-lg shadow-lg w-full max-w-4xl overflow-auto">
-          <h3 className="text-lg font-bold text-center mb-4">
+        <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full max-w-6xl">
+          <h3 className="text-lg font-bold text-center mb-6">
             Generated Time Table
           </h3>
 
-          <table className="min-w-full table-auto border border-gray-300">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="border px-4 py-2">Date</th>
-                <th className="border px-4 py-2">Task</th>
-              </tr>
-            </thead>
-            <tbody>
-              {timeTable.map((entry, index) => (
-                <tr key={index}>
-                  <td className="border px-4 py-2">{entry.date}</td>
-                  <td className="border px-4 py-2">{entry.task}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {timeTable.map((day) => (
+              <Card key={day.date} variant="outlined" sx={{ boxShadow: 2 }}>
+                <CardHeader
+                  title={new Date(day.date).toLocaleDateString(undefined, {
+                    weekday: "short",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                  titleTypographyProps={{ fontWeight: "bold" }}
+                />
+                <CardContent>
+                  {(day.tasks || []).map((task, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        borderLeft: "4px solid #1976d2",
+                        paddingLeft: "8px",
+                        marginBottom: "8px",
+                      }}
+                    >
+                      <Typography variant="body2" fontWeight="bold">
+                        {task.time}
+                      </Typography>
+                      <Typography variant="body2">{task.title}</Typography>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       )}
     </div>
