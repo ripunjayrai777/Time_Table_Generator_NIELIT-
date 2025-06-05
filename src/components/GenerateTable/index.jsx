@@ -52,7 +52,7 @@ const TimeTableGenerator = () => {
         </h2>
 
         <div className="mb-4">
-          <label className="block text-gray-700 mb-1">Select Start Date:</label>
+          <label className="block text-gray-700 mb-1">Select Start Date:-</label>
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
@@ -61,7 +61,7 @@ const TimeTableGenerator = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 mb-1">Select End Date:</label>
+          <label className="block text-gray-700 mb-1">Select End Date:-</label>
           <DatePicker
             selected={endDate}
             onChange={(date) => setEndDate(date)}
