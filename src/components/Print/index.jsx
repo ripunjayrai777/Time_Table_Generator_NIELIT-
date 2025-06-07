@@ -1,7 +1,7 @@
 import React from "react";
 
 const Print = () => {
-  return <div>Printjfj klll new one
+  return <div>Printjfj killl new one
   </div>;
 }; 
 
