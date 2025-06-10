@@ -2,7 +2,8 @@ import React from "react";
 
 const Print = () => {
   return <div>Printjfj killhjjhl yy
-     new one
+     new onedfd
+     
   </div>;
 }; 
 
