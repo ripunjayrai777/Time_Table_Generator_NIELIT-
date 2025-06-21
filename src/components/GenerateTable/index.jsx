@@ -1,216 +1,219 @@
-import React, { useState, useRef } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  Button,
-} from "@mui/material";
-import { Loader2 } from "lucide-react";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import * as XLSX from "xlsx";
+// import React, { useState, useRef } from "react";
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
+// import {
+//   Card,
+//   CardContent,
+//   CardHeader,
+//   Typography,
+//   Button,
+// } from "@mui/material";
+// import { Loader2 } from "lucide-react";
+// import jsPDF from "jspdf";
+// import html2canvas from "html2canvas";
+// import * as XLSX from "xlsx";
 
-const TimeTableGenerator = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [timeTable, setTimeTable] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const tableRef = useRef();
+// const TimeTableGenerator = () => {
+//   const [startDate, setStartDate] = useState(new Date());
+//   const [endDate, setEndDate] = useState(new Date());
+//   const [timeTable, setTimeTable] = useState([]);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState(null);
+//   const tableRef = useRef();
 
-  const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  const timeSlots = [
-    "09:00-10:00",
-    "10:00-11:00",
-    "11:00-12:00",
-    "12:00-13:00",
-    "13:00-14:00",
-    "14:00-15:00",
-  ];
+//   const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+//   const timeSlots = [
+//     "09:00-10:00",
+//     "10:00-11:00",
+//     "11:00-12:00",
+//     "12:00-13:00",
+//     "13:00-14:00",
+//     "14:00-15:00",
+//   ];
 
-  const generateTimeTable = async () => {
-    if (startDate > endDate) {
-      alert("Start date cannot be after End date!");
-      return;
-    }
+//   const generateTimeTable = async () => {
+//     if (startDate > endDate) {
+//       alert("Start date cannot be after End date!");
+//       return;
+//     }
 
-    setLoading(true);
-    setError(null);
+//     setLoading(true);
+//     setError(null);
 
-    try {
-      const params = new URLSearchParams({
-        start: startDate.toISOString(),
-        end: endDate.toISOString(),
-      });
-      const res = await fetch(`/api/timetable?${params.toString()}`);
-      if (!res.ok) throw new Error("Failed to fetch timetable");
-      const data = await res.json();
-      setTimeTable(data.length > 0 ? data : []);
-    } catch (err) {
-      setError(err.message);
-      setTimeTable([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+//     try {
+//       const params = new URLSearchParams({
+//         start: startDate.toISOString(),
+//         end: endDate.toISOString(),
+//       });
+//       const res = await fetch(`/api/timetable?${params.toString()}`);
+//       if (!res.ok) throw new Error("Failed to fetch timetable");
+//       const data = await res.json();
+//       setTimeTable(data.length > 0 ? data : []);
+//     } catch (err) {
+//       setError(err.message);
+//       setTimeTable([]);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-  // --------- Export as PDF ----------
-  const exportToPDF = () => {
-    const input = tableRef.current;
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("l", "mm", "a4");
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("timetable.pdf");
-    });
-  };
+//   // --------- Export as PDF ----------
+//   const exportToPDF = () => {
+//     const input = tableRef.current;
+//     html2canvas(input).then((canvas) => {
+//       const imgData = canvas.toDataURL("image/png");
+//       const pdf = new jsPDF("l", "mm", "a4");
+//       const imgProps = pdf.getImageProperties(imgData);
+//       const pdfWidth = pdf.internal.pageSize.getWidth();
+//       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+//       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+//       pdf.save("timetable.pdf");
+//     });
+//   };
 
-  // --------- Export as Excel ----------
-  const exportToExcel = () => {
-    const worksheetData = [
-      ["Day / Time", ...timeSlots],
-      ...daysOfWeek.map((day) => {
-        const dayData =
-          timeTable.find((d) => d.day?.toLowerCase() === day.toLowerCase()) || {};
-        const taskMap = {};
-        (dayData.tasks || []).forEach((task) => {
-          taskMap[task.time] = `${task.title}\n${task.professor}\n${task.room}`;
-        });
+//   // --------- Export as Excel ----------
+//   const exportToExcel = () => {
+//     const worksheetData = [
+//       ["Day / Time", ...timeSlots],
+//       ...daysOfWeek.map((day) => {
+//         const dayData =
+//           timeTable.find((d) => d.day?.toLowerCase() === day.toLowerCase()) || {};
+//         const taskMap = {};
+//         (dayData.tasks || []).forEach((task) => {
+//           taskMap[task.time] = `${task.title}\n${task.professor}\n${task.room}`;
+//         });
 
-        return [
-          day.toUpperCase(),
-          ...timeSlots.map((slot) => taskMap[slot] || "Free"),
-        ];
-      }),
-    ];
+//         return [
+//           day.toUpperCase(),
+//           ...timeSlots.map((slot) => taskMap[slot] || "Free"),
+//         ];
+//       }),
+//     ];
 
-    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "TimeTable");
-    XLSX.writeFile(workbook, "timetable.xlsx");
-  };
+//     const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+//     const workbook = XLSX.utils.book_new();
+//     XLSX.utils.book_append_sheet(workbook, worksheet, "TimeTable");
+//     XLSX.writeFile(workbook, "timetable.xlsx");
+//   };
 
-  return (
-    <div className="flex flex-col items-center bg-blue-50 min-h-screen p-6">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-xl font-bold mb-4 text-center">
-          Time Table Generator
-        </h2>
+//   return (
+//     <div className="flex flex-col items-center bg-blue-50 min-h-screen p-6">
+//       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+//         <h2 className="text-xl font-bold mb-4 text-center">
+//           Time Table Generator
+//         </h2>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-1">Select Start Date:</label>
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            className="border p-2 w-full rounded"
-          />
-        </div>
+//         <div className="mb-4">
+//           <label className="block text-gray-700 mb-1">Select Start Date:</label>
+//           <DatePicker
+//             selected={startDate}
+//             onChange={(date) => setStartDate(date)}
+//             className="border p-2 w-full rounded"
+//           />
+//         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-1">Select End Date:</label>
-          <DatePicker
-            selected={endDate}
-            onChange={(date) => setEndDate(date)}
-            className="border p-2 w-full rounded"
-          />
-        </div>
+//         <div className="mb-4">
+//           <label className="block text-gray-700 mb-1">Select End Date:</label>
+//           <DatePicker
+//             selected={endDate}
+//             onChange={(date) => setEndDate(date)}
+//             className="border p-2 w-full rounded"
+//           />
+//         </div>
 
-        <Button
-          onClick={generateTimeTable}
-          variant="contained"
-          color="primary"
-          fullWidth
-          disabled={loading}
-          startIcon={loading && <Loader2 className="animate-spin" />}
-        >
-          {loading ? "Generating…" : "Auto Generate (All Time Tables)"}
-        </Button>
+//         <Button
+//           onClick={generateTimeTable}
+//           variant="contained"
+//           color="primary"
+//           fullWidth
+//           disabled={loading}
+//           startIcon={loading && <Loader2 className="animate-spin" />}
+//         >
+//           {loading ? "Generating…" : "Auto Generate (All Time Tables)"}
+//         </Button>
 
-        {error && (
-          <p className="text-red-600 text-sm mt-2 text-center">{error}</p>
-        )}
-      </div>
+//         {error && (
+//           <p className="text-red-600 text-sm mt-2 text-center">{error}</p>
+//         )}
+//       </div>
 
-      {(timeTable.length >= 0 || !loading) && (
-        <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full overflow-auto">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-bold text-center w-full">
-              Generated Time Table
-            </h3>
-          </div>
+//       {(timeTable.length >= 0 || !loading) && (
+//         <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full overflow-auto">
+//           <div className="flex justify-between items-center mb-4">
+//             <h3 className="text-lg font-bold text-center w-full">
+//               Generated Time Table
+//             </h3>
+//           </div>
 
-          <div className="flex gap-4 justify-center mb-4">
-            <Button variant="outlined" onClick={exportToPDF}>
-              Export to PDF
-            </Button>
-            <Button variant="outlined" onClick={exportToExcel}>
-              Export to Excel
-            </Button>
-          </div>
+//           <div className="flex gap-4 justify-center mb-4">
+//             <Button variant="outlined" onClick={exportToPDF}>
+//               Export to PDF
+//             </Button>
+//             <Button variant="outlined" onClick={exportToExcel}>
+//               Export to Excel
+//             </Button>
+//           </div>
 
-          <div ref={tableRef}>
-            <table className="table-auto w-full border border-gray-300 text-center">
-              <thead>
-                <tr className="bg-green-600 text-white">
-                  <th className="border px-4 py-2">Day / Time</th>
-                  {timeSlots.map((slot) => (
-                    <th key={slot} className="border px-4 py-2">
-                      {slot}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {daysOfWeek.map((day) => {
-                  const dayData =
-                    timeTable.find(
-                      (d) => d.day?.toLowerCase() === day.toLowerCase()
-                    ) || {};
-                  const taskMap = {};
-                  (dayData.tasks || []).forEach((task) => {
-                    taskMap[task.time] = task;
-                  });
+//           <div ref={tableRef}>
+//             <table className="table-auto w-full border border-gray-300 text-center">
+//               <thead>
+//                 <tr className="bg-green-600 text-white">
+//                   <th className="border px-4 py-2">Day / Time</th>
+//                   {timeSlots.map((slot) => (
+//                     <th key={slot} className="border px-4 py-2">
+//                       {slot}
+//                     </th>
+//                   ))}
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {daysOfWeek.map((day) => {
+//                   const dayData =
+//                     timeTable.find(
+//                       (d) => d.day?.toLowerCase() === day.toLowerCase()
+//                     ) || {};
+//                   const taskMap = {};
+//                   (dayData.tasks || []).forEach((task) => {
+//                     taskMap[task.time] = task;
+//                   });
 
-                  return (
-                    <tr key={day} className="hover:bg-gray-50">
-                      <td className="border px-4 py-2 font-semibold text-blue-700">
-                        {day.toUpperCase()}
-                      </td>
-                      {timeSlots.map((slot) => {
-                        const task = taskMap[slot];
-                        return (
-                          <td key={slot} className="border px-2 py-2">
-                            {task ? (
-                              <div className="p-2 rounded bg-gradient-to-r from-red-400 to-purple-500 text-white shadow text-sm">
-                                <div className="font-bold">{task.title}</div>
-                                <div className="text-xs">{task.professor}</div>
-                                <div className="text-xs">{task.room}</div>
-                              </div>
-                            ) : (
-                              <span className="text-gray-400">Free</span>
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
+//                   return (
+//                     <tr key={day} className="hover:bg-gray-50">
+//                       <td className="border px-4 py-2 font-semibold text-blue-700">
+//                         {day.toUpperCase()}
+//                       </td>
+//                       {timeSlots.map((slot) => {
+//                         const task = taskMap[slot];
+//                         return (
+//                           <td key={slot} className="border px-2 py-2">
+//                             {task ? (
+//                               <div className="p-2 rounded bg-gradient-to-r from-red-400 to-purple-500 text-white shadow text-sm">
+//                                 <div className="font-bold">{task.title}</div>
+//                                 <div className="text-xs">{task.professor}</div>
+//                                 <div className="text-xs">{task.room}</div>
+//                               </div>
+//                             ) : (
+//                               <span className="text-gray-400">Free</span>
+//                             )}
+//                           </td>
+//                         );
+//                       })}
+//                     </tr>
+//                   );
+//                 })}
+//               </tbody>
+//             </table>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
 
-export default TimeTableGenerator;
+// export default TimeTableGenerator;
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+
 
 
 // import React, { useState } from "react";
@@ -475,3 +478,234 @@ export default TimeTableGenerator;
 
 // export default TimeTableGenerator;
 
+// ------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+import React, { useState, useRef } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import {
+  Button
+} from "@mui/material";
+import { Loader2 } from "lucide-react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import * as XLSX from "xlsx";
+
+const TimeTableGenerator = () => {
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [timeTable, setTimeTable] = useState([]);
+  const [timeSlots, setTimeSlots] = useState([]);
+  const [daysOfWeek, setDaysOfWeek] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const tableRef = useRef();
+
+  const generateTimeTable = async () => {
+    if (startDate > endDate) {
+      alert("Start date cannot be after End date!");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const params = new URLSearchParams({
+        start: startDate.toISOString(),
+        end: endDate.toISOString(),
+      });
+
+      const res = await fetch(`/api/timetable?${params.toString()}`);
+      if (!res.ok) throw new Error("Failed to fetch timetable");
+      const data = await res.json();
+
+      const { timeSlots: apiSlots, lessons } = data;
+
+      const activeSlots = apiSlots.filter((slot) => slot.active);
+      setTimeSlots(activeSlots);
+
+      const uniqueDays = [
+        ...new Set(activeSlots.map((slot) => slot.dayOfWeek)),
+      ];
+      setDaysOfWeek(uniqueDays);
+
+      const lessonsByDay = {};
+      lessons.forEach((lesson) => {
+        const day = lesson.dayTimeSlot.dayOfWeek;
+        const time = `${lesson.dayTimeSlot.startTime}-${lesson.dayTimeSlot.endTime}`;
+        if (!lessonsByDay[day]) lessonsByDay[day] = {};
+        lessonsByDay[day][time] = {
+          time,
+          title: lesson.subject,
+          professor: lesson.teacher,
+          room: lesson.room?.name || "N/A",
+        };
+      });
+
+      const formatted = uniqueDays.map((day) => {
+        const slotsForDay = activeSlots.filter((s) => s.dayOfWeek === day);
+        return {
+          day,
+          tasks: slotsForDay.map((slot) => {
+            const timeLabel = `${slot.startTime}-${slot.endTime}`;
+            return lessonsByDay[day]?.[timeLabel] || { time: timeLabel };
+          }),
+        };
+      });
+
+      setTimeTable(formatted);
+    } catch (err) {
+      setError(err.message);
+      setTimeTable([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const exportToPDF = () => {
+    const input = tableRef.current;
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("l", "mm", "a4");
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save("timetable.pdf");
+    });
+  };
+
+  const exportToExcel = () => {
+    const slotLabels = timeSlots
+      .filter((s) => s.active)
+      .map((s) => `${s.startTime}-${s.endTime}`);
+    const worksheetData = [
+      ["Day / Time", ...slotLabels],
+      ...timeTable.map((dayObj) => {
+        return [
+          dayObj.day.toUpperCase(),
+          ...dayObj.tasks.map((task) =>
+            task.title
+              ? `${task.title}\n${task.professor}\n${task.room}`
+              : "Free"
+          ),
+        ];
+      }),
+    ];
+
+    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "TimeTable");
+    XLSX.writeFile(workbook, "timetable.xlsx");
+  };
+
+  return (
+    <div className="flex flex-col items-center bg-blue-50 min-h-screen p-6">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-xl font-bold mb-4 text-center">
+          Time Table Generator
+        </h2>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-1">Select Start Date:</label>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            className="border p-2 w-full rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-1">Select End Date:</label>
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            className="border p-2 w-full rounded"
+          />
+        </div>
+
+        <Button
+          onClick={generateTimeTable}
+          variant="contained"
+          color="primary"
+          fullWidth
+          disabled={loading}
+          startIcon={loading && <Loader2 className="animate-spin" />}
+        >
+          {loading ? "Generating…" : "Auto Generate (All Time Tables)"}
+        </Button>
+
+        {error && (
+          <p className="text-red-600 text-sm mt-2 text-center">{error}</p>
+        )}
+      </div>
+
+      {timeTable.length > 0 && (
+        <div className="mt-6 bg-white p-6 rounded-lg shadow-lg w-full overflow-auto">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-bold text-center w-full">
+              Generated Time Table
+            </h3>
+          </div>
+
+          <div className="flex gap-4 justify-center mb-4">
+            <Button variant="outlined" onClick={exportToPDF}>
+              Export to PDF
+            </Button>
+            <Button variant="outlined" onClick={exportToExcel}>
+              Export to Excel
+            </Button>
+          </div>
+
+          <div ref={tableRef}>
+            <table className="table-auto w-full border border-gray-300 text-center">
+              <thead>
+                <tr className="bg-green-600 text-white">
+                  <th className="border px-4 py-2">Day / Time</th>
+                  {timeSlots
+                    .filter((s) => s.active)
+                    .map((slot) => (
+                      <th
+                        key={`${slot.startTime}-${slot.endTime}`}
+                        className="border px-4 py-2"
+                      >
+                        {`${slot.startTime}-${slot.endTime}`}
+                      </th>
+                    ))}
+                </tr>
+              </thead>
+              <tbody>
+                {timeTable.map((dayObj) => (
+                  <tr key={dayObj.day} className="hover:bg-gray-50">
+                    <td className="border px-4 py-2 font-semibold text-blue-700">
+                      {dayObj.day.toUpperCase()}
+                    </td>
+                    {dayObj.tasks.map((task, idx) => (
+                      <td key={idx} className="border px-2 py-2">
+                        {task.title ? (
+                          <div className="p-2 rounded bg-gradient-to-r from-red-400 to-purple-500 text-white shadow text-sm">
+                            <div className="font-bold">{task.title}</div>
+                            <div className="text-xs">{task.professor}</div>
+                            <div className="text-xs">{task.room}</div>
+                          </div>
+                        ) : (
+                          <span className="text-gray-400">Free</span>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default TimeTableGenerator;
