@@ -1,7 +1,7 @@
 import React from "react";
 
 const Print = () => {
-  return <div>Printpphjhjjhgjj
+  return <div>Printpphjhjjhgjjjj
   </div>;
 }; 
 
